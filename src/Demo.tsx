@@ -1,16 +1,6 @@
 import './Demo.css';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Container, Row, Col, Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useEffect } from 'react';
-import { bootstrapCameraKit, createMediaStreamSource, Transform2D } from "@snap/camera-kit";
-import {
-  Injectable,
-  RemoteApiService,
-  RemoteApiServices,
-  remoteApiServicesFactory,
-} from '@snap/camera-kit';
-import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 import { renderAR } from './renderAR';
 import { bootstrapCameraKit, createMediaStreamSource } from '@snap/camera-kit';
@@ -201,10 +191,29 @@ function Demo() {
           <b><span className='gradient-text'>Demo</span></b>
         </Col>
       </Row>
-      <Row className="justify-content-center">
-        <Col className="text-center">
-          <br></br>
-          <div id="canvas-container"></div>
+
+      {!isStarted ? (
+        // Before clicking the start button, show the exercise description
+        <Row className="justify-content-center">
+        <Col md={3} className="exercise-panel bg-gray">
+          <h2 className="fs-3"><b>Sample Exercise</b></h2>
+          <hr className="separator" />
+          <p className="exercise-description">
+              In this exercise, you will have three sample facial exercises to explore FaceAR features using your WebCam. After starting the exercise, you can adjust your sensitivity level and switch to unilateral mode in the setting panel.
+          </p>
+        </Col>
+        
+        <Col md={8} className="text-center">
+          <div className = "bg-gray" id="canvas-container"></div>
+          <Button
+            id="startButton"
+            variant="primary" 
+            onClick={handleStart} 
+            disabled={isStarted}
+            className="start-button w-50"
+          >
+            Start
+          </Button>
         </Col>
       </Row>
       ):(

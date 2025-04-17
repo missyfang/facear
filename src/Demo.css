@@ -11,3 +11,96 @@
 .card-link-color {
     color: white;
 }
+
+.separator {
+    border: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+.bg-gray {
+    background-color: #f0f0f0; /* Light gray background */
+    border: 1px solid #ccc; /* Optional border to make the section more distinct */
+    border-radius: 10px; /* Rounded corners for a softer look */
+    padding: 20px; /* Add some padding for spacing */
+}
+
+.settings-panel {
+    margin-right: 20px; /* Adjust the space between the settings panel and the face lens */
+}
+
+.exercise-panel{
+    margin-right: 20px;
+}
+
+.sensitivity-label {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.sensitivity-infoIcon {
+  margin-left: 5px;
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default styling */
+  appearance: none;
+  width: 20px; /* Width of the thumb */
+  height: 20px; /* Height of the thumb */
+  border-radius: 50%; /* Rounded thumb */
+  background: yellow; /* Color of the thumb */
+  cursor: pointer; /* Cursor style on hover */
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%; /* Full width of the track */
+  height: 8px; /* Height of the track */
+  background: #ddd; /* Color of the track */
+  border-radius: 5px; /* Rounded edges of the track */
+}
+
+.start-button{
+    margin-top: 10px;
+}
+
+.exercise-buttons{
+    margin-top: 10px;
+}
+
+.custom-switch .form-check-input:checked {
+  background-color: #fef500;
+  border-color: #fef500;
+}
+
+.custom-switch .form-check-input {
+  width: 3rem;
+  height: 1.5rem;
+  background-color: rgba(100, 116, 139, 0.377);
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.custom-switch .form-check-input:before {
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 50%;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.custom-switch .form-check-input:checked:before {
+  transform: translateX(1.5rem);
+}
+
+.switch-label {
+  margin-top: 0.5rem;
+  font-size: 1.2rem; 
+  font-weight: bold;
+}
+
+.switch-infoIcon{
+  margin-left: 5px;
+  cursor: pointer;
+  font-size: 0.7rem;
+}
