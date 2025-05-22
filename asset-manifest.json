@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/facear/static/css/main.8f6d0d85.css",
-    "main.js": "/facear/static/js/main.2b0f67dc.js",
+    "main.css": "/facear/static/css/main.0a6e48c7.css",
+    "main.js": "/facear/static/js/main.50671cbc.js",
     "static/js/453.0ea1adb6.chunk.js": "/facear/static/js/453.0ea1adb6.chunk.js",
     "static/media/expertGuidedRecovery.png": "/facear/static/media/expertGuidedRecovery.8d9c5b7e02e7a41e6099.png",
     "static/media/realTimeARFeedback.png": "/facear/static/media/realTimeARFeedback.b1dd013f5211cc73b6fb.png",
@@ -21,12 +21,12 @@
     "static/media/closebutton.webp": "/facear/static/media/closebutton.5c6b8820399124a8bfed.webp",
     "index.html": "/facear/index.html",
     "static/media/hamburger.webp": "/facear/static/media/hamburger.66e3497106e06ebd8abf.webp",
-    "main.8f6d0d85.css.map": "/facear/static/css/main.8f6d0d85.css.map",
-    "main.2b0f67dc.js.map": "/facear/static/js/main.2b0f67dc.js.map",
+    "main.0a6e48c7.css.map": "/facear/static/css/main.0a6e48c7.css.map",
+    "main.50671cbc.js.map": "/facear/static/js/main.50671cbc.js.map",
     "453.0ea1adb6.chunk.js.map": "/facear/static/js/453.0ea1adb6.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8f6d0d85.css",
-    "static/js/main.2b0f67dc.js"
+    "static/css/main.0a6e48c7.css",
+    "static/js/main.50671cbc.js"
   ]
 }
