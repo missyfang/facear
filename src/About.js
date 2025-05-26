@@ -65,7 +65,7 @@ function Problems() {
                 <img src={Nithisha} className="card-img-bottom mt-3" alt="Nithisha Nantha Kumar" />
                 <Button href='https://www.linkedin.com/in/nithishakumar/' className='mt-3 border-0 outer-card-bg' 
                 target="_blank" rel="noopener noreferrer">
-                    <img src={LinkedinLogo} width='20' height='auto' alt="Image" class="img-fluid"/>
+                    <img src={LinkedinLogo} width='20' height='auto' alt="Image" className="img-fluid"/>
                 </Button>{' '}
               </Card.Body>
             </Card>
@@ -77,7 +77,7 @@ function Problems() {
                 <img src={Melissa} className="card-img-bottom mt-3" alt="Melissa Fang" />
                 <Button  href='https://www.linkedin.com/in/melissa-fang-04a76a20a/' className='mt-3 border-0 outer-card-bg' 
                 target="_blank" rel="noopener noreferrer">
-                    <img src={LinkedinLogo} width='20' height='auto' alt="Image" class="img-fluid"/>
+                    <img src={LinkedinLogo} width='20' height='auto' alt="Image" className="img-fluid"/>
                 </Button>{' '}
               </Card.Body>
             </Card>
@@ -89,7 +89,7 @@ function Problems() {
                 <img src={Anisha} className="card-img-bottom mt-3" alt="Anisha Nahta" />
                 <Button href='https://www.linkedin.com/in/anishanahta/' className='mt-3 border-0 outer-card-bg' 
                 target="_blank" rel="noopener noreferrer">
-                    <img src={LinkedinLogo} width='20' height='auto' alt="Image" class="img-fluid"/>
+                    <img src={LinkedinLogo} width='20' height='auto' alt="Image" className="img-fluid"/>
                 </Button>{' '}
               </Card.Body>
             </Card>
@@ -101,7 +101,7 @@ function Problems() {
                 <img src={Haihan} className="card-img-bottom mt-3" alt="Haihan Gao" />
                 <Button href='https://www.linkedin.com/in/haihan--gao/' className='mt-3 border-0 outer-card-bg' 
                 target="_blank" rel="noopener noreferrer">
-                    <img src={LinkedinLogo} width='20' height='auto' alt="Image" class="img-fluid"/>
+                    <img src={LinkedinLogo} width='20' height='auto' alt="Image" className="img-fluid"/>
                 </Button>{' '}
               </Card.Body>
             </Card>
