@@ -3,6 +3,8 @@ import { Container, Row, Col, Button, Form, OverlayTrigger, Tooltip } from 'reac
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { renderAR } from './renderAR';
+import { bootstrapCameraKit, createMediaStreamSource } from '@snap/camera-kit';
+import { useRef } from 'react';
 
 function Demo() {
   type LensData = {
@@ -19,10 +21,47 @@ function Demo() {
   const [exerciseDuration, setExerciseDuration] = useState("10"); // Default timer value in seconds
   const [reps, setReps] = useState("10"); // Default number of reps
   const [sets, setSets] = useState("3");  // Default number of sets
+  const liveRenderTarget = document.getElementById('canvas') as HTMLCanvasElement;
+  
+  const videoContainer = document.getElementById(
+    'video-container'
+  ) as HTMLElement;
 
-    useEffect(() => {
-        renderAR(setLensData);
-    }, []); 
+  const videoTarget = document.getElementById('video') as HTMLVideoElement;
+  
+  const startRecordingButton = document.getElementById(
+    'start'
+  ) as HTMLButtonElement;
+ 
+  const stopRecordingButton = document.getElementById(
+    'stop'
+  ) as HTMLButtonElement;
+  
+  const downloadButton = document.getElementById('download') as HTMLButtonElement;
+  
+  let downloadUrl: string;
+  
+  const videoContainerRef = useRef<HTMLDivElement | null>(null);
+  const videoTargetRef = useRef<HTMLVideoElement | null>(null);
+  const startRecordingButtonRef = useRef<HTMLButtonElement | null>(null);
+  const stopRecordingButtonRef = useRef<HTMLButtonElement | null>(null);
+  const downloadButtonRef = useRef<HTMLButtonElement | null>(null);
+  let mediaRecorder: MediaRecorder;
+
+  useEffect(() => {
+      renderAR(setLensData);
+    init();
+  }, []);
+  
+  useEffect(() => {
+    if (
+      startRecordingButtonRef.current &&
+      stopRecordingButtonRef.current &&
+      downloadButtonRef.current
+    ) {
+      bindRecorder();
+    }
+  }, []);
 
     const handleStart = () => {
       setIsStarted(true)
@@ -62,6 +101,93 @@ function Demo() {
     const handleExerciseTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       setExerciseType(event.target.value);
     };
+
+    const handleUpdate = () => {
+      console.log("Settings updated:", {
+        sensitivity,
+        exerciseType,
+        exerciseDuration,
+        reps,
+        sets,
+        isLeftOn,
+        isRightOn
+      });
+    };
+
+    async function init() {
+      const cameraKit = await bootstrapCameraKit({
+        apiToken: 'eyJhbGciOiJIUzI1NiIsImtpZCI6IkNhbnZhc1MyU0hNQUNQcm9kIiwidHlwIjoiSldUIn0.eyJhdWQiOiJjYW52YXMtY2FudmFzYXBpIiwiaXNzIjoiY2FudmFzLXMyc3Rva2VuIiwibmJmIjoxNzE1NjQwNjk0LCJzdWIiOiI5YmFmZmI5Ni01ZDNlLTQ2MzUtYmIwNC00ZGFhYzNiZmQ0YTh-U1RBR0lOR345ZjJkN2Q5Ni00OTdkLTQ1YjYtODcxYy1mZDg4MzcxYjRmNTYifQ.k-Rl8uGTuACnIfjZrjMi4OSC26OStxBF6wjipB_hDYI',
+      });
+    
+      const session = await cameraKit.createSession({ liveRenderTarget });
+    
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+      });
+    
+      const source = createMediaStreamSource(mediaStream);
+    
+      await session.setSource(source);
+      await session.play();
+    
+      const { lenses } = await cameraKit.lensRepository.loadLensGroups([
+        '1002ed8b-a97a-42f0-842f-21b57f4a8a42',
+      ]);
+    
+      session.applyLens(lenses[0]);
+    
+    }
+    
+    function bindRecorder() {
+      if (!startRecordingButtonRef.current || !stopRecordingButtonRef.current || !downloadButtonRef.current || !videoContainerRef.current || !videoTargetRef.current) {
+        console.error("One or more elements are missing");
+        return;
+      }
+  
+      startRecordingButtonRef.current.addEventListener('click', () => {
+        startRecordingButtonRef.current!.disabled = true;
+        stopRecordingButtonRef.current!.disabled = false;
+        downloadButtonRef.current!.disabled = true;
+        videoContainerRef.current!.style.display = 'none';
+  
+        const mediaStream = document.querySelector('canvas')!.captureStream(30);
+        mediaRecorder = new MediaRecorder(mediaStream);
+  
+        mediaRecorder.addEventListener('dataavailable', (event) => {
+          if (!event.data.size) {
+            console.warn('No recorded data available');
+            return;
+          }
+  
+          const blob = new Blob([event.data]);
+          downloadUrl = window.URL.createObjectURL(blob);
+          downloadButtonRef.current!.disabled = false;
+  
+          videoTargetRef.current!.src = downloadUrl;
+          videoContainerRef.current!.style.display = 'block';
+        });
+  
+        mediaRecorder.start();
+      });
+  
+      stopRecordingButtonRef.current.addEventListener('click', () => {
+        startRecordingButtonRef.current!.disabled = false;
+        stopRecordingButtonRef.current!.disabled = true;
+        mediaRecorder?.stop();
+      });
+  
+      downloadButtonRef.current.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.setAttribute('style', 'display: none');
+        link.href = downloadUrl;
+        link.download = 'camera-kit-web-recording.webm';
+        link.click();
+        link.remove();
+      });
+    }
+  
+    
+    
 
     return (
       <Container className="px-4">
@@ -261,7 +387,19 @@ function Demo() {
         </Row>
       )}
       
+      <canvas id="canvas"></canvas>
+      <section>
+        <button ref={startRecordingButtonRef}>Start Recording</button>
+        <button ref={stopRecordingButtonRef} disabled>Stop Recording</button>
+      </section>
+      <section ref={videoContainerRef} style={{ display: 'none' }}>
+        <video ref={videoTargetRef} loop controls autoPlay></video>
+        <div>
+          <button ref={downloadButtonRef}>Download Video</button>
+        </div>
+      </section>
     </Container>
+    
       );
 }
 
