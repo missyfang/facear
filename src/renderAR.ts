@@ -6,7 +6,7 @@ import {
   remoteApiServicesFactory,
 } from '@snap/camera-kit';
 
-export async function renderAR() {
+export async function renderAR(setLensData: (value: object) => void) {
 
   type UIData = {
     elementName: string;
@@ -21,6 +21,11 @@ export async function renderAR() {
       //Sensitivity apiSpecId
       apiSpecId: '266d9e05-8d86-4975-9729-6313b25651bd',
       getRequestHandler(request, lens) {
+        if (request.endpointId === 'sendDataFromLens'){
+          console.log(request.parameters);
+          setLensData(request.parameters);
+          return;
+        }
         if (request.endpointId !== 'sensitivity') return;
   
         // Return a function that matches the RemoteApiRequestHandler type
@@ -116,7 +121,6 @@ export async function renderAR() {
               metadata: {},
               body: new TextEncoder().encode(JSON.stringify(values)),
             });
-            console.log(JSON.parse(JSON.stringify(values)));
           });
         };
       },

@@ -7,6 +7,11 @@ import { bootstrapCameraKit, createMediaStreamSource } from '@snap/camera-kit';
 import { useRef } from 'react';
 
 function Demo() {
+  type LensData = {
+    completedReps?: number;
+  };
+
+  const [lensData, setLensData] = useState<LensData | null>(null);
   const [sensitivity, setSensitivity] = useState("0.5");
   const [isStarted, setIsStarted] = useState(false);
   const [isLeftOn, setIsLeftOn] = useState(true);
@@ -44,7 +49,7 @@ function Demo() {
   let mediaRecorder: MediaRecorder;
 
   useEffect(() => {
-    renderAR();
+      renderAR(setLensData);
     init();
   }, []);
   
@@ -186,11 +191,14 @@ function Demo() {
 
     return (
       <Container className="px-4">
-      <Row className="justify-content-center">
-        <Col className="text-center fs-1">
-          <b><span className='gradient-text'>Demo</span></b>
-        </Col>
-      </Row>
+        <div className="top-right-text">
+          {lensData?.completedReps ?? 'Loading...'}
+        </div>
+        <Row className="justify-content-center">
+          <Col className="text-center fs-1">
+            <b><span className='gradient-text'>Demo</span></b>
+          </Col>
+        </Row>
 
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
@@ -358,17 +366,6 @@ function Demo() {
             </Col>
             </Row>
             <hr className="separator" />
-            <Row className="mb-3">
-            <Col xs={6}>
-            <Button 
-              variant="primary" 
-              className="w-100 mt-3" 
-              onClick={handleUpdate}
-            >
-              Update
-            </Button>
-            </Col>
-            </Row>
           </Col>
           
           <Col md={8} className="text-center">
