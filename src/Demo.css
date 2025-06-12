@@ -1,35 +1,77 @@
 .card-style {
-    border: 0;
-    background: #494956;
-    color: white;
+  border: 0;
+  background: #494956;
+  color: white;
 }
 
 .card-title-color {
-    color: #ffe706
+  color: #ffe706;
 }
 
 .card-link-color {
-    color: white;
+  color: white;
 }
 
 .separator {
-    border: 1px solid #ccc;
-    margin: 20px 0;
+  border: 1px solid #ccc;
+  margin: 20px 0;
 }
 
 .bg-gray {
-    background-color: #f0f0f0; /* Light gray background */
-    border: 1px solid #ccc; /* Optional border to make the section more distinct */
-    border-radius: 10px; /* Rounded corners for a softer look */
-    padding: 20px; /* Add some padding for spacing */
+  background-color: #f8f9fa;
+  border: 1.5px solid #d1d5db;
+  border-radius: 18px;
+  padding: 48px 40px;
+  margin: 32px auto;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  max-width: 900px; 
+  width: 100%; 
+  font-size: 1.18rem; 
+  transition: box-shadow 0.3s, border-color 0.3s;
 }
 
 .settings-panel {
-    margin-right: 20px; /* Adjust the space between the settings panel and the face lens */
+  background-color: #fffbe6; 
+  border: 2px solid #ffe066; 
+  border-radius: 12px; 
+  padding: 28px 24px; 
+  margin: 24px auto 24px 0; 
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
+  max-width: 650px; 
+  width: 100%; 
+  font-size: 1.1rem; 
+  transition: box-shadow 0.3s;
+  margin-right: 20px;
 }
 
-.exercise-panel{
-    margin-right: 20px;
+.exercise-panel {
+  background-color: #fffbe6; 
+  border: 2px solid #ffe066; 
+  border-radius: 12px; 
+  padding: 28px 24px; 
+  margin: 24px auto; 
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
+  max-width: 650px; 
+  width: 100%; 
+  font-size: 1.1rem; 
+  transition: box-shadow 0.3s;
+}
+
+.video-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 24px 0; 
+  display: block;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.centered-content {
+  min-height: 100vh;
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .sensitivity-label {
@@ -60,12 +102,69 @@ input[type="range"]::-webkit-slider-runnable-track {
   border-radius: 5px; /* Rounded edges of the track */
 }
 
-.start-button{
-    margin-top: 10px;
+.start-button {
+  background-color: #aaf0eb; 
+  color: black; 
+  border: none;
+  padding: 10px 20px; 
+  font-size: 1.2rem; 
+  font-weight: bold; 
+  border-radius: 5px;
+  cursor: pointer; 
+  transition: background-color 0.3s ease;
 }
 
-.exercise-buttons{
-    margin-top: 10px;
+.start-recording-button {
+  background-color: #aaf0eb; 
+  color: black; 
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.stop-recording-button {
+  background-color: #aaf0eb;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 5px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recording-buttons-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 32px 0 16px 0; 
+}
+
+.download-button {
+  background-color: #aaf0eb; 
+  color: black; 
+  border: none; 
+  padding: 10px 20px; 
+  font-size: 1.2rem; 
+  font-weight: bold; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease;
+}
+
+.download-button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.exercise-buttons {
+  margin-top: 10px;
 }
 
 .custom-switch .form-check-input:checked {
@@ -95,11 +194,11 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .switch-label {
   margin-top: 0.5rem;
-  font-size: 1.2rem; 
+  font-size: 1.2rem;
   font-weight: bold;
 }
 
-.switch-infoIcon{
+.switch-infoIcon {
   margin-left: 5px;
   cursor: pointer;
   font-size: 0.7rem;
