@@ -63,6 +63,39 @@ function Demo() {
       setExerciseType(event.target.value);
     };
 
+    const handleOutputLog = () => {
+      if (!lensData) {
+        alert("No data to download yet!");
+        return;
+      }
+    
+      // Create CSV header (all keys of lensData) and row (all values)
+      const headers = Object.keys(lensData);
+      const values = headers.map(key => (lensData as any)[key]);
+    
+      const csvContent = `${headers.join(",")}\n${values.join(",")}`;
+    
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+    
+      // Generate timestamp like 2025-04-28_14-30-00
+      const now = new Date();
+      const timestamp = now.toISOString()
+        .replace(/T/, '_') 
+        .replace(/:/g, '-')      
+        .replace(/\..+/, '');
+    
+      const filename = `lensData_${timestamp}.csv`;
+    
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+    
+      URL.revokeObjectURL(url);
+    };
+    
+
     return (
       <Container className="px-4">
         <div className="top-right-text">
@@ -255,6 +288,12 @@ function Demo() {
 
             <Col className="text-center next-button">
               <Button id= "nextButton"variant="secondary" onClick={handleNext} className="mx-2">Next</Button>
+            </Col>
+
+            <Col className="text-center">
+              <Button id="downloadCsvButton" variant="success" onClick={handleOutputLog} className="mx-2">
+                Download lensData (.csv)
+              </Button>
             </Col>
             </Row>
           </Col>
