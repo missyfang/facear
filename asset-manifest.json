@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/facear/static/css/main.57d99d58.css",
+    "main.js": "/facear/static/js/main.888c1469.js",
+    "static/js/787.55ecc84d.chunk.js": "/facear/static/js/787.55ecc84d.chunk.js",
+    "static/media/expertGuidedRecovery.png": "/facear/static/media/expertGuidedRecovery.8d9c5b7e02e7a41e6099.png",
+    "static/media/realTimeARFeedback.png": "/facear/static/media/realTimeARFeedback.b1dd013f5211cc73b6fb.png",
+    "static/media/useCase1.png": "/facear/static/media/useCase1.f633283ca1fd06f18b18.png",
+    "static/media/progressTracking.png": "/facear/static/media/progressTracking.f6f39a66c570b4b7abc8.png",
+    "static/media/showcase.png": "/facear/static/media/showcase.cc9bbc5e404880c688dd.png",
+    "static/media/youtubeVideo.png": "/facear/static/media/youtubeVideo.b0ffdf9c9b08c3b07d46.png",
+    "static/media/skilledProfessionals.png": "/facear/static/media/skilledProfessionals.f3c68ecaf55443936a6e.png",
+    "static/media/Haihan.jpg": "/facear/static/media/Haihan.55c35694a43ef709524e.jpg",
+    "static/media/MichiganMedicine.png": "/facear/static/media/MichiganMedicine.76d67168398371e2e631.png",
+    "static/media/Melissa.jpg": "/facear/static/media/Melissa.298f8fc44123dc88f60e.jpg",
+    "static/media/Nithisha.jpg": "/facear/static/media/Nithisha.22fb5fb9b5d741a3c842.jpg",
+    "static/media/Anisha.jpg": "/facear/static/media/Anisha.e01e59ed1c51017f9107.jpg",
+    "static/media/logo.png": "/facear/static/media/logo.9043a7805812449ae4fb.png",
+    "static/media/Snap.png": "/facear/static/media/Snap.6dd385bd52624cf3fd0d.png",
+    "static/media/messageIcon.png": "/facear/static/media/messageIcon.a094011abc91c3a1270a.png",
+    "static/media/closebutton.webp": "/facear/static/media/closebutton.5c6b8820399124a8bfed.webp",
+    "index.html": "/facear/index.html",
+    "static/media/hamburger.webp": "/facear/static/media/hamburger.66e3497106e06ebd8abf.webp",
+    "main.57d99d58.css.map": "/facear/static/css/main.57d99d58.css.map",
+    "main.888c1469.js.map": "/facear/static/js/main.888c1469.js.map",
+    "787.55ecc84d.chunk.js.map": "/facear/static/js/787.55ecc84d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.57d99d58.css",
+    "static/js/main.888c1469.js"
+  ]
+}
