@@ -13,3 +13,5 @@ export const Button = ({ label, onClick }: ButtonProps) => {
         </button>
     );
 }
+
+
