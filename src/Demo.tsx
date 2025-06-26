@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { renderAR } from './renderAR';
 import { bootstrapCameraKit, createMediaStreamSource } from '@snap/camera-kit';
 import { useRef } from 'react';
+import { demoExercises } from './ExerciseList';
 
 function Demo() {
   type LensData = {
@@ -196,10 +197,35 @@ function Demo() {
       }
     
       // Create CSV header (all keys of lensData) and row (all values)
-      const headers = Object.keys(lensData);
-      const values = headers.map(key => (lensData as any)[key]);
-    
-      const csvContent = `${headers.join(",")}\n${values.join(",")}`;
+      const headers = [
+        ...Object.keys(lensData),
+        "Exercise Name",
+        "Exercise Type",
+        "Difficulty Level",
+        "Exercise Duration (seconds)",
+        "Required Reps",
+        "Required Sets",
+        "Enabled Left Side",
+        "Enabled Right Side",
+      ];
+      const lensValues = Object.keys(lensData).map((key) => (lensData as any)[key]);
+      const exerciseValues = demoExercises.map((exercise) => [
+        exercise.Name,
+        exercise.ExerciseType,
+        sensitivity, // Difficulty level
+        exerciseType === "timer" ? exerciseDuration : "N/A", // Duration for timer type
+        exerciseType === "repetitive" ? reps : "N/A", // Reps for repetitive type
+        exerciseType === "repetitive" ? sets : "N/A", // Sets for repetitive type
+        isLeftOn ? "Enabled" : "Disabled", // Left side status
+        isRightOn ? "Enabled" : "Disabled", // Right side status
+      ]);
+
+      // Combine lensData and exercise data into CSV rows
+      const csvRows = exerciseValues.map((exerciseRow) =>
+        [...lensValues, ...exerciseRow].join(",")
+      );
+
+      const csvContent = `${headers.join(",")}\n${csvRows.join("\n")}`;
     
       const blob = new Blob([csvContent], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
