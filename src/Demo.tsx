@@ -454,8 +454,8 @@ function Demo() {
       
       <canvas id="canvas"></canvas>
       <section>
-        <button ref={startRecordingButtonRef}>Start Recording</button>
-        <button ref={stopRecordingButtonRef} disabled>Stop Recording</button>
+        <Button ref={startRecordingButtonRef}>Start Recording</Button>
+        <Button ref={stopRecordingButtonRef} disabled>Stop Recording</Button>
       </section>
       <section ref={videoContainerRef} style={{ display: 'none' }}>
         <video ref={videoTargetRef} loop controls autoPlay></video>
