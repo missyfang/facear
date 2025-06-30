@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { renderAR } from './renderAR';
 import { bootstrapCameraKit, createMediaStreamSource } from '@snap/camera-kit';
 import { useRef } from 'react';
+import { demoExercises } from './ExerciseList';
 
 function Demo() {
   type LensData = {
@@ -187,6 +188,64 @@ function Demo() {
     }
   
     
+    
+
+    const handleOutputLog = () => {
+      if (!lensData) {
+        alert("No data to download yet!");
+        return;
+      }
+    
+      // Create CSV header (all keys of lensData) and row (all values)
+      const headers = [
+        ...Object.keys(lensData),
+        "Exercise Name",
+        "Exercise Type",
+        "Difficulty Level",
+        "Exercise Duration (seconds)",
+        "Required Reps",
+        "Required Sets",
+        "Enabled Left Side",
+        "Enabled Right Side",
+      ];
+      const lensValues = Object.keys(lensData).map((key) => (lensData as any)[key]);
+      const exerciseValues = demoExercises.map((exercise) => [
+        exercise.Name,
+        exercise.ExerciseType,
+        sensitivity, // Difficulty level
+        exerciseType === "timer" ? exerciseDuration : "N/A", // Duration for timer type
+        exerciseType === "repetitive" ? reps : "N/A", // Reps for repetitive type
+        exerciseType === "repetitive" ? sets : "N/A", // Sets for repetitive type
+        isLeftOn ? "Enabled" : "Disabled", // Left side status
+        isRightOn ? "Enabled" : "Disabled", // Right side status
+      ]);
+
+      // Combine lensData and exercise data into CSV rows
+      const csvRows = exerciseValues.map((exerciseRow) =>
+        [...lensValues, ...exerciseRow].join(",")
+      );
+
+      const csvContent = `${headers.join(",")}\n${csvRows.join("\n")}`;
+    
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+    
+      // Generate timestamp like 2025-04-28_14-30-00
+      const now = new Date();
+      const timestamp = now.toISOString()
+        .replace(/T/, '_') 
+        .replace(/:/g, '-')      
+        .replace(/\..+/, '');
+    
+      const filename = `lensData_${timestamp}.csv`;
+    
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+    
+      URL.revokeObjectURL(url);
+    };
     
 
     return (
@@ -381,6 +440,12 @@ function Demo() {
 
             <Col className="text-center next-button">
               <Button id= "nextButton"variant="secondary" onClick={handleNext} className="mx-2">Next</Button>
+            </Col>
+
+            <Col className="text-center">
+              <Button id="downloadCsvButton" variant="success" onClick={handleOutputLog} className="mx-2">
+                Download lensData (.csv)
+              </Button>
             </Col>
             </Row>
           </Col>
