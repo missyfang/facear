@@ -261,8 +261,8 @@ function Demo() {
 
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
-        <Row className="justify-content-center">
-        <Col md={3} className="exercise-panel bg-gray">
+        <Row>
+        <Col md={3} className="exercise-panel bg-gray" style={{ marginLeft: '-300px' }}>
           <h2 className="fs-3"><b>Sample Exercise</b></h2>
           <hr className="separator" />
           <p className="exercise-description">
@@ -271,7 +271,7 @@ function Demo() {
         </Col>
         
         <Col md={8} className="text-center">
-          <div className = "bg-gray" id="canvas-container"></div>
+          <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px'}}></div>
           <Button
             id="startButton"
             variant="primary" 
@@ -285,8 +285,8 @@ function Demo() {
       </Row>
       ):(
         //After clicking the Start button, show the setting panel and change the button to "next" and "previous"
-        <Row className="justify-content-center">
-          <Col md={3} className="settings-panel bg-gray p-3">
+        <Row>
+          <Col md={3} className="settings-panel bg-gray p-3"  style={{ marginLeft: '-300px'}}>
             <h2 className="fs-3"><b>Settings</b></h2>
             <p className="setting-description">
               In this setting panel, you will be able to adjust the sensitivity level through the slider below and toggle the bilateral setting buttons
@@ -428,7 +428,7 @@ function Demo() {
           </Col>
           
           <Col md={8} className="text-center">
-            <div className = "bg-gray" id="canvas-container"></div>
+            <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px'}}></div>
             <Row className="justify-content-center mt-4">
             <Col className="text-center prev-button">
               <Button id= "prevButton" variant="secondary" onClick={handlePrevious} className="mx-2">Previous</Button>
