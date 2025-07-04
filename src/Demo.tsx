@@ -254,7 +254,7 @@ function Demo() {
           {lensData?.completedReps ?? 'Loading...'}
         </div>
         <Row className="justify-content-center">
-          <Col className="text-center fs-1">
+          <Col className="text-start fs-1" style={{ marginLeft: '-585px' }}>
             <b><span className='gradient-text'>Demo</span></b>
           </Col>
         </Row>
@@ -272,15 +272,17 @@ function Demo() {
         
         <Col md={8} className="text-center">
           <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px'}}></div>
-          <Button
-            id="startButton"
-            variant="primary" 
-            onClick={handleStart} 
-            disabled={isStarted}
-            className="start-button w-50"
-          >
-            Start
-          </Button>
+          <div style={{ width: '1315px', margin: '0 auto' }}>
+            <Button
+              id="startButton"
+              variant="primary" 
+              onClick={handleStart} 
+              disabled={isStarted}
+              className="start-button w-50 mt-3"
+            >
+              Start
+            </Button>
+          </div>
         </Col>
       </Row>
       ):(
@@ -429,25 +431,22 @@ function Demo() {
           
           <Col md={8} className="text-center">
             <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px'}}></div>
-            <Row className="justify-content-center mt-4">
-            <Col className="text-center prev-button">
-              <Button id= "prevButton" variant="secondary" onClick={handlePrevious} className="mx-2">Previous</Button>
-            </Col>
-
-            <Col className="text-center" md="auto">
-              <span className="exercise-name fs-4"><b>Sample Exercise</b></span>
-            </Col>
-
-            <Col className="text-center next-button">
-              <Button id= "nextButton"variant="secondary" onClick={handleNext} className="mx-2">Next</Button>
-            </Col>
-
-            <Col className="text-center">
-              <Button id="downloadCsvButton" variant="success" onClick={handleOutputLog} className="mx-2">
-                Download lensData (.csv)
-              </Button>
-            </Col>
-            </Row>
+            <div style={{ width: '1315px', margin: '0 auto', position: 'relative' }}>
+              <div className="d-flex justify-content-center align-items-center mt-4" style={{ gap: '20px' }}>
+                <Button id="prevButton" variant="secondary" onClick={handlePrevious}>
+                  Previous
+                </Button>
+                <span className="exercise-name fs-4"><b>Sample Exercise</b></span>
+                <Button id="nextButton" variant="secondary" onClick={handleNext}>
+                  Next
+                </Button>
+              </div>
+              <div style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
+                <Button id="downloadCsvButton" variant="success" onClick={handleOutputLog}>
+                  Download lensData (.csv)
+                </Button>
+              </div>
+            </div>
           </Col>
         </Row>
       )}
