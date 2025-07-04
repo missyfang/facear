@@ -55,6 +55,8 @@ function Demo() {
   }, []);
   
   useEffect(() => {
+  // Add a small delay to ensure the buttons are rendered
+  const timer = setTimeout(() => {
     if (
       startRecordingButtonRef.current &&
       stopRecordingButtonRef.current &&
@@ -62,7 +64,10 @@ function Demo() {
     ) {
       bindRecorder();
     }
-  }, []);
+  }, 100);
+
+  return () => clearTimeout(timer);
+}, [isStarted]); // Add isStarted as dependency so it rebinds when buttons become visible
 
     const handleStart = () => {
       setIsStarted(true)
@@ -441,6 +446,22 @@ function Demo() {
                   Next
                 </Button>
               </div>
+              <div style={{ position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
+                <Button 
+                  ref={startRecordingButtonRef} 
+                  className="me-2"
+                  variant="primary"
+                >
+                  Start Recording
+                </Button>
+                <Button 
+                  ref={stopRecordingButtonRef} 
+                  disabled
+                  variant="secondary"
+                >
+                  Stop Recording
+                </Button>
+              </div>
               <div style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
                 <Button id="downloadCsvButton" variant="success" onClick={handleOutputLog}>
                   Download lensData (.csv)
@@ -452,10 +473,6 @@ function Demo() {
       )}
       
       <canvas id="canvas"></canvas>
-      <section>
-        <Button ref={startRecordingButtonRef}>Start Recording</Button>
-        <Button ref={stopRecordingButtonRef} disabled>Stop Recording</Button>
-      </section>
       <section ref={videoContainerRef} style={{ display: 'none' }}>
         <video ref={videoTargetRef} loop controls autoPlay></video>
         <div>
