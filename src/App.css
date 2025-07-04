@@ -10,7 +10,7 @@ body {
 }
 
 .gradient-text {
-  background-image: linear-gradient(to right, purple,  red);
+  background-image: linear-gradient(to right, #1E3A8A,  #0891B2);
   background-clip: text;
   color: transparent;
   background-size: 200% 100%; 
