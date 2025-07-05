@@ -259,7 +259,7 @@ function Demo() {
           {lensData?.completedReps ?? 'Loading...'}
         </div>
         <Row className="justify-content-center">
-          <Col className="text-start fs-1" style={{ marginLeft: '-585px' }}>
+          <Col className="text-start fs-1" style={{ marginLeft: '65px' }}>
             <b><span className='gradient-text'>Demo</span></b>
           </Col>
         </Row>
@@ -473,10 +473,29 @@ function Demo() {
       )}
       
       <canvas id="canvas"></canvas>
-      <section ref={videoContainerRef} style={{ display: 'none' }}>
-        <video ref={videoTargetRef} loop controls autoPlay></video>
-        <div>
-          <button ref={downloadButtonRef}>Download Video</button>
+      <section ref={videoContainerRef} style={{ 
+        display: 'none',
+        width: '1315px',
+        margin: '0 auto',
+        textAlign: 'center',
+        marginTop: '20px',
+        position: 'relative'
+      }}>
+        <video ref={videoTargetRef} loop controls autoPlay style={{
+          maxWidth: '100%',
+          height: 'auto'
+        }}></video>
+        <div style={{ 
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginTop: '10px'
+        }}>
+          <Button 
+            ref={downloadButtonRef}
+            variant="success"
+          >
+            Download Video
+          </Button>
         </div>
       </section>
     </Container>
