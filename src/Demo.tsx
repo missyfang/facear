@@ -472,7 +472,7 @@ function Demo() {
                 <div style={{
                   position: 'absolute',
                   top: '20px',
-                  right: '30px',
+                  right: '25px',
                   zIndex: 1000,
                   display: 'flex',
                   alignItems: 'center',
