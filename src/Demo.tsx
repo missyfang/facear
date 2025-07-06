@@ -489,12 +489,15 @@ function Demo() {
         width: '1315px',
         margin: '0 auto',
         textAlign: 'center',
-        marginTop: '20px',
+        marginTop: '-100px',
         position: 'relative'
+ 
+  
       }}>
         <video ref={videoTargetRef} loop controls autoPlay style={{
           maxWidth: '100%',
-          height: 'auto'
+          height: 'auto',
+          marginLeft: '68px',
         }}></video>
         <div style={{ 
           display: 'flex',
@@ -504,6 +507,7 @@ function Demo() {
           <Button 
             ref={downloadButtonRef}
             variant="success"
+            style={{ marginRight: "-10px" }}
           >
             Download Video
           </Button>
