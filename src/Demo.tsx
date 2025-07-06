@@ -23,6 +23,8 @@ function Demo() {
   const [exerciseDuration, setExerciseDuration] = useState("10"); // Default timer value in seconds
   const [reps, setReps] = useState("10"); // Default number of reps
   const [sets, setSets] = useState("3");  // Default number of sets
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [showRedCircle, setShowRedCircle] = useState(false);
   const liveRenderTarget = document.getElementById('canvas') as HTMLCanvasElement;
   
   const videoContainer = document.getElementById(
@@ -255,6 +257,30 @@ function Demo() {
       URL.revokeObjectURL(url);
     };
     
+    useEffect(() => {
+      let interval: NodeJS.Timeout;
+      
+      if (isRecording) {
+        interval = setInterval(() => {
+          setRecordingTime(prev => prev + 1);
+          // Toggle red circle every 500ms for blinking effect
+          setShowRedCircle(prev => !prev);
+        }, 500);
+      } else {
+        setRecordingTime(0);
+        setShowRedCircle(false);
+      }
+      
+      return () => {
+        if (interval) clearInterval(interval);
+      };
+    }, [isRecording]);
+
+    const formatTime = (seconds: number) => {
+      const mins = Math.floor(seconds / 120); // Divide by 120 since we increment every 0.5s
+      const secs = Math.floor((seconds % 120) / 2);
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
 
     return (
       <Container className="px-4">
@@ -440,7 +466,33 @@ function Demo() {
           </Col>
           
           <Col md={8} className="text-center">
-            <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px'}}></div>
+            <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px', position: 'relative' }}>
+              {/* Recording Timer Overlay */}
+              {isRecording && (
+                <div style={{
+                  position: 'absolute',
+                  top: '20px',
+                  right: '30px',
+                  zIndex: 1000,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: '16px'
+                }}>
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                    backgroundColor: showRedCircle ? '#dc3545' : 'transparent',
+                    border: '2px solid #dc3545',
+                    transition: 'background-color 0.1s ease'
+                  }}></div>
+                  <span>REC {formatTime(recordingTime)}</span>
+                </div>
+              )}
+            </div>
             <div style={{ width: '1315px', margin: '0 auto', position: 'relative' }}>
               <div className="d-flex justify-content-center align-items-center mt-4" style={{ gap: '20px' }}>
                 <Button id="prevButton" variant="secondary" onClick={handlePrevious} style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}>
