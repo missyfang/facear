@@ -116,3 +116,23 @@ input[type="range"]::-webkit-slider-runnable-track {
   padding: 8px 12px;
   border-radius: 5px;
 }
+
+/* Simple hover effects for buttons with inline styles */
+#startButton:hover,
+#prevButton:hover,
+#nextButton:hover,
+#startRecordingButton:hover:not(:disabled),
+#stopRecordingButton:hover:not(:disabled) {
+  filter: brightness(0.92) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Add transition to all buttons for smooth effect */
+#startButton,
+#prevButton,
+#nextButton,
+#startRecordingButton,
+#stopRecordingButton {
+  transition: all 0.2s ease-in-out !important;
+}

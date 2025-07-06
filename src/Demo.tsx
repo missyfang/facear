@@ -453,6 +453,7 @@ function Demo() {
               </div>
               <div style={{ position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
                 <Button 
+                  id="startRecordingButton"
                   ref={startRecordingButtonRef} 
                   className="me-2"
                   variant="primary"
@@ -461,6 +462,7 @@ function Demo() {
                   Start Recording
                 </Button>
                 <Button 
+                  id="stopRecordingButton"
                   ref={stopRecordingButtonRef} 
                   disabled
                   variant="secondary"
