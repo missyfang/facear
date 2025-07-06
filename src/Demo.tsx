@@ -17,6 +17,7 @@ function Demo() {
   const [isStarted, setIsStarted] = useState(false);
   const [isLeftOn, setIsLeftOn] = useState(true);
   const [isRightOn, setIsRightOn] = useState(true);
+  const [isRecording, setIsRecording] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ left: "50%" });
   const [exerciseType, setExerciseType] = useState('timer'); // Default exercise type
   const [exerciseDuration, setExerciseDuration] = useState("10"); // Default timer value in seconds
@@ -155,7 +156,8 @@ function Demo() {
         stopRecordingButtonRef.current!.disabled = false;
         downloadButtonRef.current!.disabled = true;
         videoContainerRef.current!.style.display = 'none';
-  
+        setIsRecording(true);
+
         const mediaStream = document.querySelector('canvas')!.captureStream(30);
         mediaRecorder = new MediaRecorder(mediaStream);
   
@@ -179,6 +181,7 @@ function Demo() {
       stopRecordingButtonRef.current.addEventListener('click', () => {
         startRecordingButtonRef.current!.disabled = false;
         stopRecordingButtonRef.current!.disabled = true;
+        setIsRecording(false);
         mediaRecorder?.stop();
       });
   
@@ -283,7 +286,9 @@ function Demo() {
               variant="primary" 
               onClick={handleStart} 
               disabled={isStarted}
-              className="start-button w-50 mt-3"
+              className="start-button w-50 mt-3" style={{  backgroundColor: '#0284c7',
+                borderColor: '#2563eb',
+                color: 'white'}}
             >
               Start
             </Button>
@@ -438,11 +443,11 @@ function Demo() {
             <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px'}}></div>
             <div style={{ width: '1315px', margin: '0 auto', position: 'relative' }}>
               <div className="d-flex justify-content-center align-items-center mt-4" style={{ gap: '20px' }}>
-                <Button id="prevButton" variant="secondary" onClick={handlePrevious}>
+                <Button id="prevButton" variant="secondary" onClick={handlePrevious} style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}>
                   Previous
                 </Button>
                 <span className="exercise-name fs-4"><b>Sample Exercise</b></span>
-                <Button id="nextButton" variant="secondary" onClick={handleNext}>
+                <Button id="nextButton" variant="secondary" onClick={handleNext} style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}>
                   Next
                 </Button>
               </div>
@@ -451,6 +456,7 @@ function Demo() {
                   ref={startRecordingButtonRef} 
                   className="me-2"
                   variant="primary"
+                  style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}
                 >
                   Start Recording
                 </Button>
@@ -458,6 +464,11 @@ function Demo() {
                   ref={stopRecordingButtonRef} 
                   disabled
                   variant="secondary"
+                  style={{ 
+                    backgroundColor: isRecording ? '#dc3545' : '#0284c7', 
+                    borderColor: isRecording ? '#dc3545' : '#9ca3af', 
+                    color: 'white' 
+                  }}
                 >
                   Stop Recording
                 </Button>
