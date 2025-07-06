@@ -288,7 +288,7 @@ function Demo() {
           {lensData?.completedReps ?? 'Loading...'}
         </div>
         <Row className="justify-content-center">
-          <Col className="text-start fs-1" style={{ marginLeft: '65px' }}>
+          <Col className="text-start fs-1" style={{ marginLeft: '85px' }}>
             <b><span className='gradient-text'>Demo</span></b>
           </Col>
         </Row>
@@ -296,7 +296,7 @@ function Demo() {
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
         <Row>
-        <Col md={3} className="exercise-panel bg-gray" style={{ marginLeft: '-300px' }}>
+        <Col md={3} className="exercise-panel" style={{ marginLeft: '-300px' }}>
           <h2 className="fs-3"><b>Sample Exercise</b></h2>
           <hr className="separator" />
           <p className="exercise-description">
@@ -305,8 +305,8 @@ function Demo() {
         </Col>
         
         <Col md={8} className="text-center">
-          <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px'}}></div>
-          <div style={{ width: '1315px', margin: '0 auto' }}>
+          <div className="bg-gray" id="canvas-container" style={{ minWidth: '1385px'}}></div>
+          <div style={{ width: '1385px', margin: '0 auto' }}>
             <Button
               id="startButton"
               variant="primary" 
@@ -324,7 +324,7 @@ function Demo() {
       ):(
         //After clicking the Start button, show the setting panel and change the button to "next" and "previous"
         <Row>
-          <Col md={3} className="settings-panel bg-gray p-3"  style={{ marginLeft: '-300px'}}>
+          <Col md={3} className="settings-panel"  style={{ marginLeft: '-300px'}}>
             <h2 className="fs-3"><b>Settings</b></h2>
             <p className="setting-description">
               In this setting panel, you will be able to adjust the sensitivity level through the slider below and toggle the bilateral setting buttons
@@ -466,13 +466,13 @@ function Demo() {
           </Col>
           
           <Col md={8} className="text-center">
-            <div className="bg-gray" id="canvas-container" style={{ minWidth: '1315px', position: 'relative' }}>
+            <div className="bg-gray" id="canvas-container" style={{ width: '1385px', position: 'relative', minHeight: '400px' }}>
               {/* Recording Timer Overlay */}
               {isRecording && (
                 <div style={{
                   position: 'absolute',
-                  top: '20px',
-                  right: '25px',
+                  top: '60px',
+                  right: '85px',
                   zIndex: 1000,
                   display: 'flex',
                   alignItems: 'center',
@@ -493,7 +493,7 @@ function Demo() {
                 </div>
               )}
             </div>
-            <div style={{ width: '1315px', margin: '0 auto', position: 'relative' }}>
+            <div style={{ width: '1385px', margin: '0 auto', position: 'relative' }}>
               <div className="d-flex justify-content-center align-items-center mt-4" style={{ gap: '20px' }}>
                 <Button id="prevButton" variant="secondary" onClick={handlePrevious} style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}>
                   Previous
@@ -540,14 +540,12 @@ function Demo() {
       <canvas id="canvas"></canvas>
       <section ref={videoContainerRef} style={{ 
         display: 'none',
-        width: '1315px',
+        width: '1385px', // Changed from '1400px' to '1385px'
         margin: '0 auto',
         textAlign: 'center',
         marginTop: '-100px',
         position: 'relative'
- 
-  
-      }}>
+}}>
         <video ref={videoTargetRef} loop controls autoPlay style={{
           maxWidth: '100%',
           height: 'auto',
@@ -561,7 +559,7 @@ function Demo() {
           <Button 
             ref={downloadButtonRef}
             variant="success"
-            style={{ marginRight: "-10px" }}
+            style={{ marginRight: "20px" }}
           >
             Download Video
           </Button>
