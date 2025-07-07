@@ -17,11 +17,14 @@ function Demo() {
   const [isStarted, setIsStarted] = useState(false);
   const [isLeftOn, setIsLeftOn] = useState(true);
   const [isRightOn, setIsRightOn] = useState(true);
+  const [isRecording, setIsRecording] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ left: "50%" });
   const [exerciseType, setExerciseType] = useState('timer'); // Default exercise type
   const [exerciseDuration, setExerciseDuration] = useState("10"); // Default timer value in seconds
   const [reps, setReps] = useState("10"); // Default number of reps
   const [sets, setSets] = useState("3");  // Default number of sets
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [showRedCircle, setShowRedCircle] = useState(false);
   const liveRenderTarget = document.getElementById('canvas') as HTMLCanvasElement;
   
   const videoContainer = document.getElementById(
@@ -55,6 +58,8 @@ function Demo() {
   }, []);
   
   useEffect(() => {
+  // Add a small delay to ensure the buttons are rendered
+  const timer = setTimeout(() => {
     if (
       startRecordingButtonRef.current &&
       stopRecordingButtonRef.current &&
@@ -62,7 +67,10 @@ function Demo() {
     ) {
       bindRecorder();
     }
-  }, []);
+  }, 100);
+
+  return () => clearTimeout(timer);
+}, [isStarted]); // Add isStarted as dependency so it rebinds when buttons become visible
 
     const handleStart = () => {
       setIsStarted(true)
@@ -150,7 +158,8 @@ function Demo() {
         stopRecordingButtonRef.current!.disabled = false;
         downloadButtonRef.current!.disabled = true;
         videoContainerRef.current!.style.display = 'none';
-  
+        setIsRecording(true);
+
         const mediaStream = document.querySelector('canvas')!.captureStream(30);
         mediaRecorder = new MediaRecorder(mediaStream);
   
@@ -174,6 +183,7 @@ function Demo() {
       stopRecordingButtonRef.current.addEventListener('click', () => {
         startRecordingButtonRef.current!.disabled = false;
         stopRecordingButtonRef.current!.disabled = true;
+        setIsRecording(false);
         mediaRecorder?.stop();
       });
   
@@ -247,6 +257,30 @@ function Demo() {
       URL.revokeObjectURL(url);
     };
     
+    useEffect(() => {
+      let interval: NodeJS.Timeout;
+      
+      if (isRecording) {
+        interval = setInterval(() => {
+          setRecordingTime(prev => prev + 1);
+          // Toggle red circle every 500ms for blinking effect
+          setShowRedCircle(prev => !prev);
+        }, 500);
+      } else {
+        setRecordingTime(0);
+        setShowRedCircle(false);
+      }
+      
+      return () => {
+        if (interval) clearInterval(interval);
+      };
+    }, [isRecording]);
+
+    const formatTime = (seconds: number) => {
+      const mins = Math.floor(seconds / 120); // Divide by 120 since we increment every 0.5s
+      const secs = Math.floor((seconds % 120) / 2);
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
 
     return (
       <Container className="px-4">
@@ -254,15 +288,15 @@ function Demo() {
           {lensData?.completedReps ?? 'Loading...'}
         </div>
         <Row className="justify-content-center">
-          <Col className="text-center fs-1">
+          <Col className="text-start fs-1" style={{ marginLeft: '85px' }}>
             <b><span className='gradient-text'>Demo</span></b>
           </Col>
         </Row>
 
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
-        <Row className="justify-content-center">
-        <Col md={3} className="exercise-panel bg-gray">
+        <Row>
+        <Col md={3} className="exercise-panel" style={{ marginLeft: '0', maxWidth: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
           <h2 className="fs-3"><b>Sample Exercise</b></h2>
           <hr className="separator" />
           <p className="exercise-description">
@@ -271,22 +305,26 @@ function Demo() {
         </Col>
         
         <Col md={8} className="text-center">
-          <div className = "bg-gray" id="canvas-container"></div>
-          <Button
-            id="startButton"
-            variant="primary" 
-            onClick={handleStart} 
-            disabled={isStarted}
-            className="start-button w-50"
-          >
-            Start
-          </Button>
+          <div className="bg-gray" id="canvas-container" style={{ minWidth: '1385px'}}></div>
+          <div style={{ width: '1385px', margin: '0 auto' }}>
+            <Button
+              id="startButton"
+              variant="primary" 
+              onClick={handleStart} 
+              disabled={isStarted}
+              className="start-button w-50 mt-3" style={{  backgroundColor: '#0284c7',
+                borderColor: '#2563eb',
+                color: 'white'}}
+            >
+              Start
+            </Button>
+          </div>
         </Col>
       </Row>
       ):(
         //After clicking the Start button, show the setting panel and change the button to "next" and "previous"
-        <Row className="justify-content-center">
-          <Col md={3} className="settings-panel bg-gray p-3">
+        <Row>
+          <Col md={3} className="settings-panel"  style={{ marginLeft: '0', maxWidth: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
             <h2 className="fs-3"><b>Settings</b></h2>
             <p className="setting-description">
               In this setting panel, you will be able to adjust the sensitivity level through the slider below and toggle the bilateral setting buttons
@@ -428,39 +466,103 @@ function Demo() {
           </Col>
           
           <Col md={8} className="text-center">
-            <div className = "bg-gray" id="canvas-container"></div>
-            <Row className="justify-content-center mt-4">
-            <Col className="text-center prev-button">
-              <Button id= "prevButton" variant="secondary" onClick={handlePrevious} className="mx-2">Previous</Button>
-            </Col>
-
-            <Col className="text-center" md="auto">
-              <span className="exercise-name fs-4"><b>Sample Exercise</b></span>
-            </Col>
-
-            <Col className="text-center next-button">
-              <Button id= "nextButton"variant="secondary" onClick={handleNext} className="mx-2">Next</Button>
-            </Col>
-
-            <Col className="text-center">
-              <Button id="downloadCsvButton" variant="success" onClick={handleOutputLog} className="mx-2">
-                Download lensData (.csv)
-              </Button>
-            </Col>
-            </Row>
+            <div className="bg-gray" id="canvas-container" style={{ width: '1385px', position: 'relative', minHeight: '400px' }}>
+              {/* Recording Timer Overlay */}
+              {isRecording && (
+                <div style={{
+                  position: 'absolute',
+                  top: '60px',
+                  right: '85px',
+                  zIndex: 1000,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: '16px'
+                }}>
+                  <div style={{
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                    backgroundColor: showRedCircle ? '#dc3545' : 'transparent',
+                    border: '2px solid #dc3545',
+                    transition: 'background-color 0.1s ease'
+                  }}></div>
+                  <span>REC {formatTime(recordingTime)}</span>
+                </div>
+              )}
+            </div>
+            <div style={{ width: '1385px', margin: '0 auto', position: 'relative' }}>
+              <div className="d-flex justify-content-center align-items-center mt-4" style={{ gap: '20px' }}>
+                <Button id="prevButton" variant="secondary" onClick={handlePrevious} style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}>
+                  Previous
+                </Button>
+                <span className="exercise-name fs-4"><b>Sample Exercise</b></span>
+                <Button id="nextButton" variant="secondary" onClick={handleNext} style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}>
+                  Next
+                </Button>
+              </div>
+              <div style={{ position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
+                <Button 
+                  id="startRecordingButton"
+                  ref={startRecordingButtonRef} 
+                  className="me-2"
+                  variant="primary"
+                  style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}
+                >
+                  Start Recording
+                </Button>
+                <Button 
+                  id="stopRecordingButton"
+                  ref={stopRecordingButtonRef} 
+                  disabled
+                  variant="secondary"
+                  style={{ 
+                    backgroundColor: isRecording ? '#dc3545' : '#0284c7', 
+                    borderColor: isRecording ? '#dc3545' : '#9ca3af', 
+                    color: 'white' 
+                  }}
+                >
+                  Stop Recording
+                </Button>
+              </div>
+              <div style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
+                <Button id="downloadCsvButton" variant="success" onClick={handleOutputLog}>
+                  Download lensData (.csv)
+                </Button>
+              </div>
+            </div>
           </Col>
         </Row>
       )}
       
       <canvas id="canvas"></canvas>
-      <section>
-        <Button ref={startRecordingButtonRef}>Start Recording</Button>
-        <Button ref={stopRecordingButtonRef} disabled>Stop Recording</Button>
-      </section>
-      <section ref={videoContainerRef} style={{ display: 'none' }}>
-        <video ref={videoTargetRef} loop controls autoPlay></video>
-        <div>
-          <button ref={downloadButtonRef}>Download Video</button>
+      <section ref={videoContainerRef} style={{ 
+        display: 'none',
+        width: '1385px', // Changed from '1400px' to '1385px'
+        margin: '0 auto',
+        textAlign: 'center',
+        marginTop: '-100px',
+        position: 'relative'
+}}>
+        <video ref={videoTargetRef} loop controls autoPlay style={{
+          maxWidth: '100%',
+          height: 'auto',
+          marginLeft: '68px',
+        }}></video>
+        <div style={{ 
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginTop: '10px'
+        }}>
+          <Button 
+            ref={downloadButtonRef}
+            variant="success"
+            style={{ marginRight: "20px" }}
+          >
+            Download Video
+          </Button>
         </div>
       </section>
     </Container>

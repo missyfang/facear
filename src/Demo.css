@@ -18,18 +18,36 @@
 }
 
 .bg-gray {
-    background-color: #f0f0f0; /* Light gray background */
-    border: 1px solid #ccc; /* Optional border to make the section more distinct */
-    border-radius: 10px; /* Rounded corners for a softer look */
-    padding: 20px; /* Add some padding for spacing */
+    background-color: #f8f9fa;
+    border: 1.5px solid #d1d5db;
+    border-radius: 18px;
+    padding: 48px 40px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+    font-size: 1.18rem; 
+    transition: box-shadow 0.3s, border-color 0.3s;
+    min-width: 1400px;
+    width: 1400px;
+    overflow: visible;
 }
 
 .settings-panel {
-    margin-right: 20px; /* Adjust the space between the settings panel and the face lens */
+    background-color: #fffbe6; 
+    border: 2px solid #ffe066; 
+    border-radius: 12px; 
+    padding: 28px 24px; 
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
+    font-size: 1.1rem; 
+    transition: box-shadow 0.3s;
 }
 
-.exercise-panel{
-    margin-right: 20px;
+.exercise-panel {
+    background-color: #fffbe6; 
+    border: 2px solid #ffe066; 
+    border-radius: 12px; 
+    padding: 28px 24px; 
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
+    font-size: 1.1rem; 
+    transition: box-shadow 0.3s;
 }
 
 .sensitivity-label {
@@ -115,4 +133,24 @@ input[type="range"]::-webkit-slider-runnable-track {
   color: white;
   padding: 8px 12px;
   border-radius: 5px;
+}
+
+/* Simple hover effects for buttons with inline styles */
+#startButton:hover,
+#prevButton:hover,
+#nextButton:hover,
+#startRecordingButton:hover:not(:disabled),
+#stopRecordingButton:hover:not(:disabled) {
+  filter: brightness(0.92) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Add transition to all buttons for smooth effect */
+#startButton,
+#prevButton,
+#nextButton,
+#startRecordingButton,
+#stopRecordingButton {
+  transition: all 0.2s ease-in-out !important;
 }
