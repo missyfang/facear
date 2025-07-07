@@ -296,7 +296,7 @@ function Demo() {
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
         <Row>
-        <Col md={3} className="exercise-panel" style={{ marginLeft: '-300px' }}>
+        <Col md={3} className="exercise-panel" style={{ marginLeft: '0', maxWidth: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
           <h2 className="fs-3"><b>Sample Exercise</b></h2>
           <hr className="separator" />
           <p className="exercise-description">
@@ -324,7 +324,7 @@ function Demo() {
       ):(
         //After clicking the Start button, show the setting panel and change the button to "next" and "previous"
         <Row>
-          <Col md={3} className="settings-panel"  style={{ marginLeft: '-300px'}}>
+          <Col md={3} className="settings-panel"  style={{ marginLeft: '0', maxWidth: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
             <h2 className="fs-3"><b>Settings</b></h2>
             <p className="setting-description">
               In this setting panel, you will be able to adjust the sensitivity level through the slider below and toggle the bilateral setting buttons
