@@ -7,7 +7,11 @@ import { bootstrapCameraKit, createMediaStreamSource } from '@snap/camera-kit';
 import { useRef } from 'react';
 import { demoExercises } from './ExerciseList';
 
-function Demo() {
+type DemoProps = {
+  lensID: string;
+};
+
+function Demo({ lensID }: DemoProps) {
   type LensData = {
     completedReps?: number;
   };
@@ -53,9 +57,15 @@ function Demo() {
   let mediaRecorder: MediaRecorder;
 
   useEffect(() => {
-      renderAR(setLensData);
-    init();
-  }, []);
+    let cleanup: (() => void) | undefined;
+    renderAR(setLensData, lensID).then((fn) => {
+      cleanup = fn;
+    });
+
+    return () => {
+      if (cleanup) cleanup();
+    };
+  }, [lensID]);
   
   useEffect(() => {
   // Add a small delay to ensure the buttons are rendered
@@ -197,7 +207,37 @@ function Demo() {
       });
     }
   
-    
+    const handleImportLensData = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+        const rows = content.split("\n").map((row) => row.split(","));
+        if (rows.length < 2) return;
+
+        const headers = rows[0].map(h => h.trim());
+        const values = rows[1].map(v => v.trim());
+        const data: Record<string, string> = {};
+        headers.forEach((header, idx) => {
+          data[header] = values[idx];
+        });
+
+        // Update state based on imported data
+        if (data["Difficulty Level"]) setSensitivity(data["Difficulty Level"]);
+        if (data["Exercise Duration (seconds)"]) setExerciseDuration(data["Exercise Duration (seconds)"]);
+        if (data["Required Reps"]) setReps(data["Required Reps"]);
+        if (data["Required Sets"]) setSets(data["Required Sets"]);
+        if (data["Enabled Left Side"]) setIsLeftOn(data["Enabled Left Side"] === "Enabled");
+        if (data["Enabled Right Side"]) setIsRightOn(data["Enabled Right Side"] === "Enabled");
+        if (data["Exercise Type"]) setExerciseType(data["Exercise Type"]);
+        // Add more fields as needed
+
+        alert("Settings updated from imported lensData!");
+      };
+      reader.readAsText(file);
+    };
     
 
     const handleOutputLog = () => {
@@ -531,6 +571,21 @@ function Demo() {
                 <Button id="downloadCsvButton" variant="success" onClick={handleOutputLog}>
                   Download lensData (.csv)
                 </Button>
+                <Button
+                  id="importCsvButton"
+                  variant="info"
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => document.getElementById('importLensDataInput')?.click()}
+                >
+                  Import lensData (.csv)
+                </Button>
+                <input
+                  id="importLensDataInput"
+                  type="file"
+                  accept=".csv"
+                  style={{ display: 'none' }}
+                  onChange={handleImportLensData}
+                />
               </div>
             </div>
           </Col>

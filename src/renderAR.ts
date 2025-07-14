@@ -6,7 +6,7 @@ import {
   remoteApiServicesFactory,
 } from '@snap/camera-kit';
 
-export async function renderAR(setLensData: (value: object) => void) {
+export async function renderAR(setLensData: (value: object) => void, lensID: string) {
 
   type UIData = {
     elementName: string;
@@ -137,18 +137,14 @@ export async function renderAR(setLensData: (value: object) => void) {
         container.provides(
           Injectable(
             remoteApiServicesFactory.token,
-            [remoteApiServicesFactory.token] as const,
-            (existing: RemoteApiServices) => [...existing, remoteApiService]
+            () => [remoteApiService]
           )
         )
     );
 
     // Let CameraKit create a new canvas, then append it to the DOM
     const canvasContainer = document.getElementById("canvas-container");
-
-    if(!canvasContainer) {
-      return
-    }
+    if (!canvasContainer) return;
 
     // Create a CameraKitSession to render lenses
     const session = await cameraKit.createSession();
@@ -161,9 +157,16 @@ export async function renderAR(setLensData: (value: object) => void) {
     await source.setRenderSize(window.innerWidth/1.8, window.innerHeight/1.5);
    
     // Loading a single lens and apply it to the session
-    var lensID = "40476bf8-01c0-45d9-b082-74392206e5e2";
     var lensGroupID = "1002ed8b-a97a-42f0-842f-21b57f4a8a42";
     const lens = await cameraKit.lensRepository.loadLens(lensID, lensGroupID);
     await session.applyLens(lens, { launchParams: { text: "Some Text that we will use with a Lens" }});
     await session.play();
+
+    // Return a cleanup function
+    return () => {
+      session?.destroy();
+      if (canvasContainer.contains(session.output.live)) {
+        canvasContainer.removeChild(session.output.live);
+      }
+    };
   }
