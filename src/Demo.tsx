@@ -537,34 +537,54 @@ function Demo() {
         </Row>
       )}
       
-      <canvas id="canvas"></canvas>
-      <section ref={videoContainerRef} style={{ 
-        display: 'none',
-        width: '1385px', // Changed from '1400px' to '1385px'
-        margin: '0 auto',
-        textAlign: 'center',
-        marginTop: '-100px',
-        position: 'relative'
+   <canvas id="canvas"></canvas>
+<section ref={videoContainerRef} style={{ 
+  display: 'none',
+  maxWidth: '900px',
+  margin: '30px auto',
+  textAlign: 'center',
+  padding: '30px',
+  backgroundColor: '#ffffff',
+  borderRadius: '16px',
+  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.12)',
+  border: '1px solid #e5e7eb',
+  position: 'relative'
 }}>
-        <video ref={videoTargetRef} loop controls autoPlay style={{
-          maxWidth: '100%',
-          height: 'auto',
-          marginLeft: '68px',
-        }}></video>
-        <div style={{ 
-          display: 'flex',
-          justifyContent: 'flex-end',
-          marginTop: '10px'
-        }}>
-          <Button 
-            ref={downloadButtonRef}
-            variant="success"
-            style={{ marginRight: "20px" }}
-          >
-            Download Video
-          </Button>
-        </div>
-      </section>
+  <h3 className="fs-3" style={{ 
+    marginBottom: '20px'
+  }}>
+    <b>Recording Preview</b>
+  </h3>
+  <div style={{
+    background: '#f9fafb',
+    padding: '20px',
+    borderRadius: '12px',
+    border: '1px solid #e5e7eb',
+    marginBottom: '20px'
+  }}>
+    <video ref={videoTargetRef} loop controls autoPlay style={{
+      width: '100%',
+      maxWidth: '700px',
+      height: 'auto',
+      borderRadius: '10px',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+      border: '2px solid #e5e7eb'
+    }}></video>
+  </div>
+  <div style={{ 
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '20px'
+  }}>
+    <Button 
+      ref={downloadButtonRef}
+      variant="success"
+      style={{ marginRight: "20px" }}
+    >
+      Download Video
+    </Button>
+  </div>
+</section>
     </Container>
     
       );
