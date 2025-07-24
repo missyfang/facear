@@ -148,7 +148,7 @@ function Demo() {
     }
     
     function bindRecorder() {
-      if (!startRecordingButtonRef.current || !stopRecordingButtonRef.current || !downloadButtonRef.current || !videoContainerRef.current || !videoTargetRef.current) {
+      if (!startRecordingButtonRef.current || !stopRecordingButtonRef.current || !downloadButtonRef.current || !videoContainerRef.current?.style.display || !videoTargetRef.current) {
         console.error("One or more elements are missing");
         return;
       }
@@ -339,7 +339,6 @@ function Demo() {
                       position: "absolute",
                       top: "-30px",
                       left: tooltipPosition.left,
-                      background: "#fef500",
                       color: "#000",
                       padding: "5px",
                       borderRadius: "5px",
@@ -492,8 +491,8 @@ function Demo() {
                 </div>
               )}
             </div>
-            <div style={{ width: '1385px', margin: '0 auto', position: 'relative' }}>
-              <div className="d-flex justify-content-center align-items-center mt-4" style={{ gap: '20px' }}>
+            <div style={{ width: '980px', margin: '0 auto', position: 'relative' }}>
+              <div className="d-flex justify-content-center align-items-center mt-4" style={{ gap: '5px' }}>
                 <Button id="prevButton" variant="secondary" onClick={handlePrevious} style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}>
                   Previous
                 </Button>
@@ -506,7 +505,7 @@ function Demo() {
                 <Button 
                   id="startRecordingButton"
                   ref={startRecordingButtonRef} 
-                  className="me-2"
+                  className="me-1"
                   variant="primary"
                   style={{ backgroundColor: '#0284c7', borderColor: '#2563eb', color: 'white' }}
                 >
