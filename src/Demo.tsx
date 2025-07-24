@@ -288,7 +288,7 @@ function Demo() {
           {lensData?.completedReps ?? 'Loading...'}
         </div>
         <Row className="justify-content-center">
-          <Col className="text-start fs-1" style={{ marginLeft: '85px' }}>
+          <Col className="text-start fs-1" style={{ marginLeft: '340px' }}>
             <b><span className='gradient-text'>Demo</span></b>
           </Col>
         </Row>
@@ -305,8 +305,8 @@ function Demo() {
         </Col>
         
         <Col md={8} className="text-center">
-          <div className="bg-gray" id="canvas-container" style={{ minWidth: '1385px'}}></div>
-          <div style={{ width: '1385px', margin: '0 auto' }}>
+          <div className="bg-gray" id="canvas-container" style={{ minWidth: '980px'}}></div>
+         
             <Button
               id="startButton"
               variant="primary" 
@@ -318,7 +318,6 @@ function Demo() {
             >
               Start
             </Button>
-          </div>
         </Col>
       </Row>
       ):(
@@ -466,7 +465,7 @@ function Demo() {
           </Col>
           
           <Col md={8} className="text-center">
-            <div className="bg-gray" id="canvas-container" style={{ width: '1385px', position: 'relative', minHeight: '400px' }}>
+            <div className="bg-gray" id="canvas-container" style={{ width: '980px', position: 'relative', minHeight: '400px' }}>
               {/* Recording Timer Overlay */}
               {isRecording && (
                 <div style={{
@@ -540,15 +539,10 @@ function Demo() {
    <canvas id="canvas"></canvas>
 <section ref={videoContainerRef} style={{ 
   display: 'none',
-  maxWidth: '900px',
-  margin: '30px auto',
+  maxWidth: '1000px',
   textAlign: 'center',
-  padding: '30px',
-  backgroundColor: '#ffffff',
-  borderRadius: '16px',
-  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.12)',
-  border: '1px solid #e5e7eb',
-  position: 'relative'
+  position: 'relative',
+  left: '315px',
 }}>
   <h3 className="fs-3" style={{ 
     marginBottom: '20px'
@@ -564,10 +558,9 @@ function Demo() {
   }}>
     <video ref={videoTargetRef} loop controls autoPlay style={{
       width: '100%',
-      maxWidth: '700px',
+      maxWidth: '1000px',
       height: 'auto',
       borderRadius: '10px',
-      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
       border: '2px solid #e5e7eb'
     }}></video>
   </div>
