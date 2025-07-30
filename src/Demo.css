@@ -152,3 +152,19 @@ input[type="range"]::-webkit-slider-runnable-track {
 #stopRecordingButton {
   transition: all 0.2s ease-in-out !important;
 }
+
+.demo-title {
+  position: absolute;
+  top: -60px;
+  left: 20px;
+  margin: 0;
+  z-index: 10;
+}
+
+@media (max-width: 992px) {
+  .demo-title {
+    position: static;
+    margin-top: 20px;
+    text-align: left;
+  }
+}

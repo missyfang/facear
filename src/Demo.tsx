@@ -287,12 +287,7 @@ function Demo() {
         <div className="top-right-text">
           {lensData?.completedReps ?? 'Loading...'}
         </div>
-        <Row className="justify-content-center">
-          <Col className="text-start fs-1" style={{ marginLeft: '340px' }}>
-            <b><span className='gradient-text'>Demo</span></b>
-          </Col>
-        </Row>
-
+        
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
         <Row>
@@ -305,7 +300,12 @@ function Demo() {
         </Col>
         
         <Col md={8} className="text-center">
-          <div className="bg-gray" id="canvas-container" style={{ minWidth: '980px'}}></div>
+          <div style={{ position: 'relative', width: '980px', margin: '0 auto' }}>
+            <h1 className="fs-1 demo-title">
+              <b><span className='gradient-text'>{isStarted ? 'Settings & Exercise' : 'Demo'}</span></b>
+            </h1>
+            <div className="bg-gray" id="canvas-container" style={{ minWidth: '980px'}}></div>
+          </div>
          
             <Button
               id="startButton"
