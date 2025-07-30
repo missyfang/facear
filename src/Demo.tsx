@@ -339,6 +339,7 @@ function Demo() {
                       position: "absolute",
                       top: "-30px",
                       left: tooltipPosition.left,
+                      background: "#fef500",
                       color: "#000",
                       padding: "5px",
                       borderRadius: "5px",
