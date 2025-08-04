@@ -345,9 +345,7 @@ function Demo() {
             </div>
             <div
               className="bg-gray"
-              id="canvas-container"
-              style={{ minWidth: "980px" }}
-            >
+              id="canvas-container"            >
               <canvas id="canvas"></canvas>
             </div>{" "}
             <Button

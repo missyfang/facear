@@ -25,7 +25,9 @@
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     font-size: 1.18rem; 
     transition: box-shadow 0.3s, border-color 0.3s;
-    overflow: visible;
+    overflow-x: auto;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 .settings-panel {
@@ -36,6 +38,8 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
     font-size: 1.1rem; 
     transition: box-shadow 0.3s;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 .exercise-panel {
@@ -46,6 +50,8 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
     font-size: 1.1rem; 
     transition: box-shadow 0.3s;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 .sensitivity-label {
