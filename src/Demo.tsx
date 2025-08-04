@@ -544,11 +544,6 @@ function Demo() {
             <div
               className="bg-gray"
               id="canvas-container"
-              style={{
-                width: "980px",
-                position: "relative",
-                minHeight: "400px",
-              }}
             >
               {/* Recording Timer Overlay */}
               {isRecording && (
