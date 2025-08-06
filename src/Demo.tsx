@@ -672,10 +672,12 @@ function Demo() {
         ref={videoContainerRef}
         style={{
           display: "none",
-          maxWidth: "1000px",
+          width: "100%",
+          maxWidth: "100%",
           textAlign: "center",
           position: "relative",
-          left: "315px",
+          margin: "20px auto",
+          padding: "0 20px",
         }}
       >
         <h3
@@ -693,6 +695,7 @@ function Demo() {
             borderRadius: "12px",
             border: "1px solid #e5e7eb",
             marginBottom: "20px",
+            maxWidth: "100%",
           }}
         >
           <video
@@ -702,7 +705,7 @@ function Demo() {
             autoPlay
             style={{
               width: "100%",
-              maxWidth: "1000px",
+              maxWidth: "100%",
               height: "auto",
               borderRadius: "10px",
               border: "2px solid #e5e7eb",
