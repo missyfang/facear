@@ -578,7 +578,7 @@ function Demo() {
               )}
             </div>
             <div
-              style={{ width: "980px", margin: "0 auto", position: "relative" }}
+              style={{ width: "100%", margin: "0 auto", position: "relative" }}
             >
               <div
                 className="d-flex justify-content-center align-items-center mt-4"
@@ -612,23 +612,23 @@ function Demo() {
                   Next
                 </Button>
               </div>
+              
+              {/* Recording and CSV buttons moved below */}
               <div
-                style={{
-                  position: "absolute",
-                  left: "0",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                }}
+                className="d-flex justify-content-center align-items-center mt-3"
+                style={{ gap: "10px" }}
               >
                 <Button
                   id="startRecordingButton"
                   ref={startRecordingButtonRef}
-                  className="me-1"
-                  variant="primary"
+                  variant="secondary"
+                  size="sm"
                   style={{
                     backgroundColor: "#0284c7",
                     borderColor: "#2563eb",
                     color: "white",
+                    fontSize: "14px",
+                    padding: "5px 10px",
                   }}
                 >
                   Start Recording
@@ -638,29 +638,28 @@ function Demo() {
                   ref={stopRecordingButtonRef}
                   disabled
                   variant="secondary"
+                  size="sm"
                   style={{
                     backgroundColor: isRecording ? "#dc3545" : "#0284c7",
                     borderColor: isRecording ? "#dc3545" : "#9ca3af",
                     color: "white",
+                    fontSize: "14px",
+                    padding: "5px 10px",
                   }}
                 >
                   Stop Recording
                 </Button>
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  right: "0",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                }}
-              >
                 <Button
                   id="downloadCsvButton"
                   variant="success"
+                  size="sm"
                   onClick={handleOutputLog}
+                  style={{
+                    fontSize: "14px",
+                    padding: "5px 10px",
+                  }}
                 >
-                  Download lensData (.csv)
+                  Download CSV
                 </Button>
               </div>
             </div>
