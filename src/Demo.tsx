@@ -547,35 +547,12 @@ function Demo() {
             >
               {/* Recording Timer Overlay */}
               {isRecording && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "60px",
-                    right: "85px",
-                    zIndex: 1000,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    color: "white",
-                    fontWeight: "bold",
-                    fontSize: "16px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "50%",
-                      backgroundColor: showRedCircle
-                        ? "#dc3545"
-                        : "transparent",
-                      border: "2px solid #dc3545",
-                      transition: "background-color 0.1s ease",
-                    }}
-                  ></div>
+                <div className="recording-indicator">
+                  <div className={`recording-dot ${showRedCircle ? 'active' : ''}`}></div>
                   <span>REC {formatTime(recordingTime)}</span>
                 </div>
               )}
+              <canvas id="canvas"></canvas>
             </div>
             <div
               style={{ width: "100%", margin: "0 auto", position: "relative" }}
