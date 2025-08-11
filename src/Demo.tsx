@@ -345,6 +345,7 @@ function Demo() {
             </div>
             <div
               className="bg-gray"
+              style={{marginRight:"-120px"}}
               id="canvas-container"            >
               <canvas id="canvas"></canvas>
             </div>{" "}
@@ -543,6 +544,7 @@ function Demo() {
             </div>
             <div
               className="bg-gray"
+              style={{marginRight:"-120px"}}
               id="canvas-container"
             >
               {/* Recording Timer Overlay */}
