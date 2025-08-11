@@ -25,29 +25,63 @@
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     font-size: 1.18rem; 
     transition: box-shadow 0.3s, border-color 0.3s;
-    min-width: 1400px;
-    width: 1400px;
-    overflow: visible;
+    overflow-x: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    position: relative; /* Add this to make it a positioned container */
+}
+
+/* Add this new class for the recording indicator */
+.recording-indicator {
+    position: absolute;
+    top: 15px;
+    left: 50px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    font-size: 14px;
+    background: transparent; /* Remove background */
+    padding: 0;
+    border-radius: 0; /* Remove border radius since there's no background */
+}
+
+.recording-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #dc3545;
+    transition: background-color 0.1s ease;
+}
+
+.recording-dot.active {
+    background-color: #dc3545;
 }
 
 .settings-panel {
-    background-color: #fffbe6; 
-    border: 2px solid #ffe066; 
-    border-radius: 12px; 
+    background-color: white; 
+    border: 2px solid white; 
+    border-radius: 12px;
     padding: 28px 24px; 
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
     font-size: 1.1rem; 
     transition: box-shadow 0.3s;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 .exercise-panel {
-    background-color: #fffbe6; 
-    border: 2px solid #ffe066; 
+    background-color: white; 
+    border: 2px solid white; 
     border-radius: 12px; 
     padding: 28px 24px; 
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
     font-size: 1.1rem; 
     transition: box-shadow 0.3s;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 .sensitivity-label {
@@ -153,4 +187,20 @@ input[type="range"]::-webkit-slider-runnable-track {
 #startRecordingButton,
 #stopRecordingButton {
   transition: all 0.2s ease-in-out !important;
+}
+
+.demo-title {
+  position: absolute;
+  top: -60px;
+  left: 20px;
+  margin: 0;
+  z-index: 10;
+}
+
+@media (max-width: 992px) {
+  .demo-title {
+    position: static;
+    margin-top: 20px;
+    text-align: left;
+  }
 }
