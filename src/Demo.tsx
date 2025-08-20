@@ -70,7 +70,12 @@ function Demo({ lensID }: DemoProps) {
 
   useEffect(() => {
     let cleanup: (() => void) | undefined;
-    renderAR(setLensData, lensID).then((fn) => {
+
+    const dataHandlers = {
+      setSensitivity
+    };
+
+    renderAR(setLensData, lensID, dataHandlers).then((fn) => {
       cleanup = fn;
     });
 

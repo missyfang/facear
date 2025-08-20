@@ -9,7 +9,7 @@ import About from './About';
 
 const lensIDs = {
   basic: "2317d687-d5ce-4ccf-95ce-06ab74358a93",
-  jumpGame: "40476bf8-01c0-45d9-b082-74392206e5e2",
+  jumpGame: "0b504864-00df-4321-8fdf-0c86bd5bcfaa",
   timer: "623ea02f-ff58-48ce-a42d-badce1fecdb6"
 };
 
