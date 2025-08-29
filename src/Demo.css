@@ -21,15 +21,15 @@
     background-color: #f8f9fa;
     border: 1.5px solid #d1d5db;
     border-radius: 18px;
-    padding: 48px 40px;
+    padding: 40px 40px;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     font-size: 1.18rem; 
     transition: box-shadow 0.3s, border-color 0.3s;
     max-height: 70vh;
-    position: relative; /* Add this to make it a positioned container */
+    /* left: -10px; */
+    position: relative; 
 }
 
-/* Add this new class for the recording indicator */
 .recording-indicator {
     position: absolute;
     top: 15px;

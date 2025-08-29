@@ -595,8 +595,18 @@ function Demo({ lensID }: DemoProps) {
                   <span>REC {formatTime(recordingTime)}</span>
                 </div>
               )}
-              <canvas id="canvas"></canvas>
+              <canvas 
+                id="canvas"
+                style={{
+                  width: "100%",
+                  maxWidth: "600px",
+                  height: "400px",
+                  display: "block",
+                  margin: "0 auto"
+                }}
+              ></canvas>
             </div>
+
             <div
               style={{ width: "100%", margin: "0 auto", position: "relative" }}
             >
@@ -633,7 +643,7 @@ function Demo({ lensID }: DemoProps) {
                 </Button>
               </div>
               
-              {/* Recording and CSV buttons moved below */}
+              {/* Recording and CSV buttons */}
               <div
                 className="d-flex justify-content-center align-items-center mt-3"
                 style={{ gap: "10px" }}
@@ -683,71 +693,65 @@ function Demo({ lensID }: DemoProps) {
                 </Button>
               </div>
             </div>
+
+            {/* Recording Preview - moved below all buttons */}
+            <section
+              ref={videoContainerRef}
+              style={{
+                display: "none",
+                width: "100%",
+                textAlign: "center",
+                position: "relative",
+                marginTop: "20px",
+              }}
+            >
+              <h3
+                className="fs-3"
+                style={{
+                  marginBottom: "20px",
+                }}
+              >
+                <b>Recording Preview</b>
+              </h3>
+              <div
+                className="bg-gray" // Use same bg-gray class for consistency
+                style={{
+                  padding: "20px",
+                  borderRadius: "12px",
+                  marginBottom: "20px",
+                }}
+              >
+                <video
+                  ref={videoTargetRef}
+                  loop
+                  controls
+                  autoPlay
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "10px",
+                    border: "2px solid #e5e7eb",
+                  }}
+                ></video>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <Button
+                  ref={downloadButtonRef}
+                  variant="success"
+                >
+                  Download Video
+                </Button>
+              </div>
+            </section>
           </Col>
         </Row>
       )}
-
-      <canvas id="canvas"></canvas>
-      <section
-        ref={videoContainerRef}
-        style={{
-          display: "none",
-          width: "100%",
-          maxWidth: "100%",
-          textAlign: "center",
-          position: "relative",
-          margin: "20px auto",
-          padding: "0 20px",
-        }}
-      >
-        <h3
-          className="fs-3"
-          style={{
-            marginBottom: "20px",
-          }}
-        >
-          <b>Recording Preview</b>
-        </h3>
-        <div
-          style={{
-            background: "#f9fafb",
-            padding: "20px",
-            borderRadius: "12px",
-            border: "1px solid #e5e7eb",
-            marginBottom: "20px",
-            maxWidth: "100%",
-          }}
-        >
-          <video
-            ref={videoTargetRef}
-            loop
-            controls
-            autoPlay
-            style={{
-              width: "100%",
-              maxWidth: "100%",
-              height: "auto",
-              borderRadius: "10px",
-              border: "2px solid #e5e7eb",
-            }}
-          ></video>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
-        >
-          <Button
-            ref={downloadButtonRef}
-            variant="success"
-            style={{ marginRight: "20px" }}
-          >
-            Download Video
-          </Button>
-        </div>
-      </section>
     </Container>
   );
 }
