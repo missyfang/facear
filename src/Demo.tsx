@@ -376,8 +376,7 @@ function Demo({ lensID }: DemoProps) {
               unilateral mode in the setting panel.
             </p>
           </Col>
-
-          <Col md={8} className="text-center">
+      <Col md={8} className="text-center">
             <div style={{ position: "relative" }}>
               <h1 className="demo-title">
                 <b>
@@ -388,9 +387,9 @@ function Demo({ lensID }: DemoProps) {
             <div
               className="bg-gray"
               style={{marginRight:"-120px"}}
-              id="canvas-container"            >
-              <canvas id="canvas"></canvas>
-            </div>{" "}
+              id="canvas-container"
+            >
+            </div>
             <Button
               id="startButton"
               variant="primary"

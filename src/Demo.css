@@ -25,9 +25,7 @@
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     font-size: 1.18rem; 
     transition: box-shadow 0.3s, border-color 0.3s;
-    overflow-x: auto;
     max-height: 70vh;
-    overflow-y: auto;
     position: relative; /* Add this to make it a positioned container */
 }
 
@@ -81,7 +79,6 @@
     font-size: 1.1rem; 
     transition: box-shadow 0.3s;
     max-height: 70vh;
-    overflow-y: auto;
 }
 
 .sensitivity-label {
