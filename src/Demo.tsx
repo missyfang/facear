@@ -358,12 +358,6 @@ function Demo({ lensID }: DemoProps) {
           <Col
             md={3}
             className="exercise-panel"
-            style={{
-              marginLeft: "0",
-              maxWidth: "100%",
-              maxHeight: "90vh",
-              overflowY: "auto",
-            }}
           >
             <h2 className="fs-3">
               <b>Sample Exercise</b>
@@ -412,12 +406,6 @@ function Demo({ lensID }: DemoProps) {
           <Col
             md={3}
             className="settings-panel"
-            style={{
-              marginLeft: "0",
-              maxWidth: "100%",
-              maxHeight: "90vh",
-              overflowY: "auto",
-            }}
           >
             <h2 className="fs-3">
               <b>Settings</b>
@@ -585,7 +573,7 @@ function Demo({ lensID }: DemoProps) {
             </div>
             <div
               className="bg-gray"
-              style={{marginRight:"-120px"}}
+              // style={{marginRight:"-120px"}}
               id="canvas-container"
             >
               {/* Recording Timer Overlay */}
