@@ -380,7 +380,7 @@ function Demo({ lensID }: DemoProps) {
             </div>
             <div
               className="bg-gray"
-              style={{marginRight:"-120px"}}
+              // style={{marginRight:"-120px"}}
               id="canvas-container"
             >
             </div>
@@ -614,7 +614,7 @@ function Demo({ lensID }: DemoProps) {
                 >
                   Previous
                 </Button>
-                <span className="exercise-name fs-4">
+                <span className="exercise-name fs-3">
                   <b>Sample Exercise</b>
                 </span>
                 <Button
@@ -690,7 +690,7 @@ function Demo({ lensID }: DemoProps) {
                 width: "100%",
                 textAlign: "center",
                 position: "relative",
-                marginTop: "20px",
+                marginTop: "48px",
               }}
             >
               <h3
