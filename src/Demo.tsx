@@ -21,7 +21,7 @@ type DemoProps = {
 };
 
 function Demo({ config }: DemoProps) {
-  const { lensID, name, description, features } = config;
+  const { lensID, name, description, features, availableExercises } = config;
   
   type LensData = {
     completedReps?: number;
@@ -37,8 +37,11 @@ function Demo({ config }: DemoProps) {
   const [tooltipPosition, setTooltipPosition] = useState({ left: "50%" });
   const [exerciseType, setExerciseType] = useState("timer"); // Default exercise type
   const [exerciseDuration, setExerciseDuration] = useState("10"); // Default timer value in seconds
-  const [reps, setReps] = useState("10"); // Default number of reps
+  const [reps, setReps] = useState("5"); // Default number of reps
   const [sets, setSets] = useState("3"); // Default number of sets
+  const [selectedExercise, setSelectedExercise] = useState(
+    availableExercises?.[0] || ""
+  );
   const [recordingTime, setRecordingTime] = useState(0);
   const [showRedCircle, setShowRedCircle] = useState(false);
   const [gameSpeed, setGameSpeed] = useState("0.5");
@@ -147,11 +150,19 @@ function Demo({ config }: DemoProps) {
     //TODO
   };
 
-  const handleExerciseTypeChange = (
+  const handleExerciseSelectionChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setExerciseType(event.target.value);
+    setSelectedExercise(event.target.value);
   };
+
+  const getCurrentExerciseName = () => {
+    if (selectedExercise) {
+      return selectedExercise;
+    }
+    return "Sample Exercise";
+  };
+
 
   const handleUpdate = () => {
     console.log("Settings updated:", {
@@ -368,9 +379,9 @@ function Demo({ config }: DemoProps) {
 
   return (
     <Container className="px-4">
-      <div className="top-right-text">
+      {/* <div className="top-right-text">
         {lensData?.completedReps ?? "Loading..."}
-      </div>
+      </div> */}
 
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
@@ -427,6 +438,34 @@ function Demo({ config }: DemoProps) {
             </p>
 
             <hr className="separator" />
+
+            {/* Exercise Selection Dropdown - Add this FIRST in the settings */}
+            {features.showExerciseSelection && 
+             availableExercises && 
+             availableExercises.length > 0 && (
+              <div>
+                <Form.Group controlId="exerciseSelection" className="mb-3">
+                  <Form.Label>
+                    <b>Select {features.exerciseTypes.includes("game") ? "Game" : "Exercise"}</b>
+                  </Form.Label>
+                  <Form.Select
+                    value={selectedExercise}
+                    onChange={handleExerciseSelectionChange}
+                  >
+                    {availableExercises.map(exercise => (
+                      <option key={exercise} value={exercise}>
+                        {exercise}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <Form.Text className="text-muted">
+                    Choose the specific {features.exerciseTypes.includes("game") ? "game" : "exercise"} you want to perform
+                  </Form.Text>
+                </Form.Group>
+                <hr className="separator" />
+              </div>
+            )}
+
             <OverlayTrigger
               placement="top"
               overlay={
@@ -661,7 +700,7 @@ function Demo({ config }: DemoProps) {
                   Previous
                 </Button>
                 <span className="exercise-name fs-3">
-                  <b>Sample Exercise</b>
+                  <b>{getCurrentExerciseName()}</b>
                 </span>
                 <Button
                   id="nextButton"

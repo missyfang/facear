@@ -31,11 +31,11 @@ function FaceARNavbar() {
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Link to="/about" className="nav-link">About</Link>
               <NavDropdown title="Demo" id="demo-nav-dropdown">
-                <NavDropdown.Item as={Link} to="/demo/basic">Basic</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/demo/jump-game">Jump Game</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/demo/timer">Timer</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/demo/basic">General Exercises</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/demo/lip">Lip</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/demo/eye-and-brow">Eye and Brow</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/demo/jump-game">Jump Game</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/demo/timer">Timer</NavDropdown.Item>
               </NavDropdown>
               <Link to="mailto:facearteam@umich.edu" className="nav-link">Contact</Link>
             </Nav>
