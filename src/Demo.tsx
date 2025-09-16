@@ -237,8 +237,8 @@ function Demo({ lensID }: DemoProps) {
       const rows = content.split("\n").map((row) => row.split(","));
       if (rows.length < 2) return;
 
-      const headers = rows[0].map(h => h.trim());
-      const values = rows[1].map(v => v.trim());
+      const headers = rows[0].map((h) => h.trim());
+      const values = rows[1].map((v) => v.trim());
       const data: Record<string, string> = {};
       headers.forEach((header, idx) => {
         data[header] = values[idx];
@@ -246,11 +246,14 @@ function Demo({ lensID }: DemoProps) {
 
       // Update state based on imported data
       if (data["Difficulty Level"]) setSensitivity(data["Difficulty Level"]);
-      if (data["Exercise Duration (seconds)"]) setExerciseDuration(data["Exercise Duration (seconds)"]);
+      if (data["Exercise Duration (seconds)"])
+        setExerciseDuration(data["Exercise Duration (seconds)"]);
       if (data["Required Reps"]) setReps(data["Required Reps"]);
       if (data["Required Sets"]) setSets(data["Required Sets"]);
-      if (data["Enabled Left Side"]) setIsLeftOn(data["Enabled Left Side"] === "Enabled");
-      if (data["Enabled Right Side"]) setIsRightOn(data["Enabled Right Side"] === "Enabled");
+      if (data["Enabled Left Side"])
+        setIsLeftOn(data["Enabled Left Side"] === "Enabled");
+      if (data["Enabled Right Side"])
+        setIsRightOn(data["Enabled Right Side"] === "Enabled");
       if (data["Exercise Type"]) setExerciseType(data["Exercise Type"]);
       // Add more fields as needed
 
@@ -355,16 +358,7 @@ function Demo({ lensID }: DemoProps) {
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
         <Row>
-          <Col
-            md={3}
-            className="exercise-panel"
-            style={{
-              marginLeft: "0",
-              maxWidth: "100%",
-              maxHeight: "90vh",
-              overflowY: "auto",
-            }}
-          >
+          <Col md={3} className="exercise-panel">
             <h2 className="fs-3">
               <b>Sample Exercise</b>
             </h2>
@@ -376,7 +370,6 @@ function Demo({ lensID }: DemoProps) {
               unilateral mode in the setting panel.
             </p>
           </Col>
-
           <Col md={8} className="text-center">
             <div style={{ position: "relative" }}>
               <h1 className="demo-title">
@@ -387,10 +380,9 @@ function Demo({ lensID }: DemoProps) {
             </div>
             <div
               className="bg-gray"
-              style={{marginRight:"-120px"}}
-              id="canvas-container"            >
-              <canvas id="canvas"></canvas>
-            </div>{" "}
+              // style={{marginRight:"-120px"}}
+              id="canvas-container"
+            ></div>
             <Button
               id="startButton"
               variant="primary"
@@ -410,16 +402,7 @@ function Demo({ lensID }: DemoProps) {
       ) : (
         //After clicking the Start button, show the setting panel and change the button to "next" and "previous"
         <Row>
-          <Col
-            md={3}
-            className="settings-panel"
-            style={{
-              marginLeft: "0",
-              maxWidth: "100%",
-              maxHeight: "90vh",
-              overflowY: "auto",
-            }}
-          >
+          <Col md={3} className="settings-panel">
             <h2 className="fs-3">
               <b>Settings</b>
             </h2>
@@ -586,38 +569,40 @@ function Demo({ lensID }: DemoProps) {
             </div>
             <div
               className="bg-gray"
-              style={{marginRight:"-120px"}}
+              // style={{marginRight:"-120px"}}
               id="canvas-container"
             >
               {/* Recording Timer Overlay */}
               {isRecording && (
                 <div className="recording-indicator">
-                  <div className={`recording-dot ${showRedCircle ? 'active' : ''}`}></div>
+                  <div
+                    className={`recording-dot ${showRedCircle ? "active" : ""}`}
+                  ></div>
                   <span>REC {formatTime(recordingTime)}</span>
                 </div>
               )}
-              <canvas id="canvas"></canvas>
             </div>
+
             <div
               style={{ width: "100%", margin: "0 auto", position: "relative" }}
             >
               <div
-                className="d-flex justify-content-center align-items-center mt-4"
-                style={{ gap: "5px" }}
+                className="d-flex justify-content-center align-items-center mt-3"
+                style={{ gap: "20px" }}
               >
                 <Button
                   id="prevButton"
                   variant="secondary"
                   onClick={handlePrevious}
                   style={{
-                    backgroundColor: "#0284c7",
-                    borderColor: "#2563eb",
-                    color: "white",
+                    backgroundColor: "#ffffffff",
+                    borderColor: "#ffffffff",
+                    color: "black",
                   }}
                 >
                   Previous
                 </Button>
-                <span className="exercise-name fs-4">
+                <span className="exercise-name fs-3">
                   <b>Sample Exercise</b>
                 </span>
                 <Button
@@ -625,19 +610,19 @@ function Demo({ lensID }: DemoProps) {
                   variant="secondary"
                   onClick={handleNext}
                   style={{
-                    backgroundColor: "#0284c7",
-                    borderColor: "#2563eb",
-                    color: "white",
+                    backgroundColor: "#ffffffff",
+                    borderColor: "#ffffffff",
+                    color: "black",
                   }}
                 >
                   Next
                 </Button>
               </div>
-              
-              {/* Recording and CSV buttons moved below */}
+
+              {/* Recording and CSV buttons */}
               <div
                 className="d-flex justify-content-center align-items-center mt-3"
-                style={{ gap: "10px" }}
+                style={{ gap: "5px" }}
               >
                 <Button
                   id="startRecordingButton"
@@ -670,85 +655,79 @@ function Demo({ lensID }: DemoProps) {
                 >
                   Stop Recording
                 </Button>
-                <Button
-                  id="downloadCsvButton"
-                  variant="success"
-                  size="sm"
-                  onClick={handleOutputLog}
-                  style={{
-                    fontSize: "14px",
-                    padding: "5px 10px",
-                  }}
-                >
-                  Download CSV
-                </Button>
+
+              {/* Download CSV Button */}
+              <Button
+                id="downloadCsvButton"
+                variant="success"
+                size="sm"
+                onClick={handleOutputLog}
+                style={{
+                  fontSize: "14px",
+                  padding: "5px 10px",
+                  marginLeft: "20px",
+                }}
+              >
+                Download CSV
+              </Button>
               </div>
             </div>
+
+            {/* Recording Preview - moved below all buttons */}
+            <section
+              ref={videoContainerRef}
+              style={{
+                display: "none",
+                width: "100%",
+                textAlign: "center",
+                position: "relative",
+                marginTop: "48px",
+              }}
+            >
+              <h3
+                className="fs-3"
+                style={{
+                  marginBottom: "20px",
+                }}
+              >
+                <b>Recording Preview</b>
+              </h3>
+              <div
+                className="bg-gray" // Use same bg-gray class for consistency
+                style={{
+                  padding: "20px",
+                  borderRadius: "12px",
+                  marginBottom: "20px",
+                }}
+              >
+                <video
+                  ref={videoTargetRef}
+                  loop
+                  controls
+                  autoPlay
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "10px",
+                    border: "2px solid #e5e7eb",
+                  }}
+                ></video>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <Button ref={downloadButtonRef} variant="success">
+                  Download Video
+                </Button>
+              </div>
+            </section>
           </Col>
         </Row>
       )}
-
-      <canvas id="canvas"></canvas>
-      <section
-        ref={videoContainerRef}
-        style={{
-          display: "none",
-          width: "100%",
-          maxWidth: "100%",
-          textAlign: "center",
-          position: "relative",
-          margin: "20px auto",
-          padding: "0 20px",
-        }}
-      >
-        <h3
-          className="fs-3"
-          style={{
-            marginBottom: "20px",
-          }}
-        >
-          <b>Recording Preview</b>
-        </h3>
-        <div
-          style={{
-            background: "#f9fafb",
-            padding: "20px",
-            borderRadius: "12px",
-            border: "1px solid #e5e7eb",
-            marginBottom: "20px",
-            maxWidth: "100%",
-          }}
-        >
-          <video
-            ref={videoTargetRef}
-            loop
-            controls
-            autoPlay
-            style={{
-              width: "100%",
-              maxWidth: "100%",
-              height: "auto",
-              borderRadius: "10px",
-              border: "2px solid #e5e7eb",
-            }}
-          ></video>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
-        >
-          <Button
-            ref={downloadButtonRef}
-            variant="success"
-            style={{ marginRight: "20px" }}
-          >
-            Download Video
-          </Button>
-        </div>
-      </section>
     </Container>
   );
 }
