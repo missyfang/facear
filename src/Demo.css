@@ -84,12 +84,12 @@
     overflow-y: auto;
 }
 
-.sensitivity-label {
+.difficulty-label {
   font-size: 1.5rem;
   font-weight: bold;
 }
 
-.sensitivity-infoIcon {
+.difficulty-infoIcon {
   margin-left: 5px;
   cursor: pointer;
   font-size: 0.7rem;

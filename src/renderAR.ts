@@ -9,7 +9,7 @@ import {
 export async function renderAR(
   setLensData: (value: object) => void, 
   lensID: string,
-  dataHandlers: { setSensitivity: (value: string) => void }
+  dataHandlers: { setDifficulty: (value: string) => void }
 ){
 
   type UIData = {
@@ -31,7 +31,7 @@ export async function renderAR(
           if (params) {
             // Handle sensitivity updates
             if ('sensitivity' in params && typeof params.sensitivity === 'string') {
-              dataHandlers.setSensitivity(params.sensitivity);
+              dataHandlers.setDifficulty(params.sensitivity);
             }
             return;
           }
@@ -44,7 +44,7 @@ export async function renderAR(
           const waitForInput = () => {
             return new Promise<UIData>((resolve) => {
               const startButton = document.getElementById('startButton');
-              const sensitivityInput = document.getElementById('mySensitivity');
+              const difficultyInput = document.getElementById('myDifficulty');
               const toggleLeft = document.getElementById('leftSwitch') as HTMLInputElement;
               const toggleRight = document.getElementById('rightSwitch') as HTMLInputElement;
               const prevButton = document.getElementById('prevButton');
@@ -85,16 +85,15 @@ export async function renderAR(
                 //startButton.addEventListener('click', handleClick, { once: true });
                 startButton.onclick = handleClick;
               }
-              else if (sensitivityInput && toggleLeft && toggleRight && prevButton && nextButton){
-                sensitivityInput.addEventListener('input', (event) => {
+              else if (difficultyInput && toggleLeft && toggleRight && prevButton && nextButton){
+                difficultyInput.addEventListener('input', (event) => {
                   const inputElement = event.target as HTMLInputElement;
                   resolve({
                     elementName: "sensitivity",
                     value: inputElement.value,
                     pressed: false,
                   });
-                  // prevents the promise from being resolved multiple times if the button is clicked more than once
-                }, { once: true });
+                }, { once: false });
                 toggleLeft.onchange = handleToggle;
                 toggleRight.onchange = handleToggle;
                 prevButton.onclick = handleClick;
