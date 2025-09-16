@@ -21,17 +21,26 @@
     background-color: #f8f9fa;
     border: 1.5px solid #d1d5db;
     border-radius: 18px;
-    padding: 48px 40px;
+    padding: 40px 40px;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     font-size: 1.18rem; 
     transition: box-shadow 0.3s, border-color 0.3s;
-    overflow-x: auto;
     max-height: 70vh;
-    overflow-y: auto;
-    position: relative; /* Add this to make it a positioned container */
+    /* left: -10px; */
+    position: relative; 
+      display: flex; /* Enable flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    overflow: hidden; /* Hide excess content */
 }
 
-/* Add this new class for the recording indicator */
+.bg-gray > * {
+    flex-shrink: 1; /* Allow child elements to shrink */
+    max-width: 100%; /* Prevent overflow */
+    max-height: 100%; /* Prevent overflow */
+    object-fit: contain; /* Ensure content scales proportionally */
+}
+
 .recording-indicator {
     position: absolute;
     top: 15px;
@@ -80,8 +89,7 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07); 
     font-size: 1.1rem; 
     transition: box-shadow 0.3s;
-    max-height: 70vh;
-    overflow-y: auto;
+    max-height: 40vh;
 }
 
 .difficulty-label {
