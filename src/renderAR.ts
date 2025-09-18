@@ -6,7 +6,11 @@ import {
   remoteApiServicesFactory,
 } from '@snap/camera-kit';
 
-export async function renderAR(setLensData: (value: object) => void, lensID: string) {
+export async function renderAR(
+  setLensData: (value: object) => void, 
+  lensID: string,
+  dataHandlers: { setDifficulty: (value: string) => void }
+){
 
   type UIData = {
     elementName: string;
@@ -19,12 +23,20 @@ export async function renderAR(setLensData: (value: object) => void, lensID: str
       //FaceAR_Data apiSpecId
       apiSpecId: 'a4033f5b-b300-417e-9aa2-10a107dacd19',
       getRequestHandler(request, lens) {
-        if (request.endpointId === 'sendDataFromLens'){
+        if (request.endpointId === 'sendData'){
           console.log(request.parameters);
           setLensData(request.parameters);
-          return;
+
+          const params = request.parameters;
+          if (params) {
+            // Handle sensitivity updates
+            if ('sensitivity' in params && typeof params.sensitivity === 'string') {
+              dataHandlers.setDifficulty(params.sensitivity);
+            }
+            return;
+          }
         }
-        if (request.endpointId !== 'difficulty') return;
+        if (request.endpointId !== 'basic') return;
 
         // Return a function that matches the RemoteApiRequestHandler type
         return (reply) => {
@@ -32,7 +44,7 @@ export async function renderAR(setLensData: (value: object) => void, lensID: str
           const waitForInput = () => {
             return new Promise<UIData>((resolve) => {
               const startButton = document.getElementById('startButton');
-              const sensitivityInput = document.getElementById('mySensitivity');
+              const difficultyInput = document.getElementById('myDifficulty');
               const toggleLeft = document.getElementById('leftSwitch') as HTMLInputElement;
               const toggleRight = document.getElementById('rightSwitch') as HTMLInputElement;
               const prevButton = document.getElementById('prevButton');
@@ -73,16 +85,15 @@ export async function renderAR(setLensData: (value: object) => void, lensID: str
                 //startButton.addEventListener('click', handleClick, { once: true });
                 startButton.onclick = handleClick;
               }
-              else if (sensitivityInput && toggleLeft && toggleRight && prevButton && nextButton){
-                sensitivityInput.addEventListener('input', (event) => {
+              else if (difficultyInput && toggleLeft && toggleRight && prevButton && nextButton){
+                difficultyInput.addEventListener('input', (event) => {
                   const inputElement = event.target as HTMLInputElement;
                   resolve({
                     elementName: "sensitivity",
                     value: inputElement.value,
                     pressed: false,
                   });
-                  // prevents the promise from being resolved multiple times if the button is clicked more than once
-                }, { once: true });
+                }, { once: false });
                 toggleLeft.onchange = handleToggle;
                 toggleRight.onchange = handleToggle;
                 prevButton.onclick = handleClick;

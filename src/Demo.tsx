@@ -14,18 +14,22 @@ import { renderAR } from "./renderAR";
 import { bootstrapCameraKit, createMediaStreamSource } from "@snap/camera-kit";
 import { useRef } from "react";
 import { demoExercises } from "./ExerciseList";
+import { LensConfig } from "./constant/lensConfig";
 
 type DemoProps = {
-  lensID: string;
+  config: LensConfig;
 };
 
-function Demo({ lensID }: DemoProps) {
+function Demo({ config }: DemoProps) {
+  const { lensID, name, description, features, availableExercises } = config;
+  
   type LensData = {
     completedReps?: number;
   };
 
   const [lensData, setLensData] = useState<LensData | null>(null);
-  const [sensitivity, setSensitivity] = useState("0.5");
+  const [difficulty, setDifficulty] = useState("0.5");
+  const [minDifficulty, setMinDifficulty] = useState(0.5);
   const [isStarted, setIsStarted] = useState(false);
   const [isLeftOn, setIsLeftOn] = useState(true);
   const [isRightOn, setIsRightOn] = useState(true);
@@ -33,10 +37,16 @@ function Demo({ lensID }: DemoProps) {
   const [tooltipPosition, setTooltipPosition] = useState({ left: "50%" });
   const [exerciseType, setExerciseType] = useState("timer"); // Default exercise type
   const [exerciseDuration, setExerciseDuration] = useState("10"); // Default timer value in seconds
-  const [reps, setReps] = useState("10"); // Default number of reps
+  const [reps, setReps] = useState("5"); // Default number of reps
   const [sets, setSets] = useState("3"); // Default number of sets
+  const [selectedExercise, setSelectedExercise] = useState(
+    availableExercises?.[0] || ""
+  );
+  const [selectedExerciseIndex, setSelectedExerciseIndex] = useState(0);
   const [recordingTime, setRecordingTime] = useState(0);
   const [showRedCircle, setShowRedCircle] = useState(false);
+  const [gameSpeed, setGameSpeed] = useState("0.5");
+  const [speedtipPosition, setSpeedTipPosition] = useState({ left: "50%" });
   const liveRenderTarget = document.getElementById(
     "canvas"
   ) as HTMLCanvasElement;
@@ -70,7 +80,19 @@ function Demo({ lensID }: DemoProps) {
 
   useEffect(() => {
     let cleanup: (() => void) | undefined;
-    renderAR(setLensData, lensID).then((fn) => {
+
+    const dataHandlers = {
+      setDifficulty: (value: string) => {
+        setDifficulty(Math.max(0, parseFloat(value) + 0.05).toString());
+        setMinDifficulty(Math.max(0, parseFloat(value) + 0.05));
+
+        const sliderWidth = 200;
+        const thumbPosition = (+value - minDifficulty) * sliderWidth / (1 - minDifficulty);
+        setTooltipPosition({ left: `${thumbPosition}px` });
+      }
+    };
+
+    renderAR(setLensData, lensID, dataHandlers).then((fn) => {
       cleanup = fn;
     });
 
@@ -100,7 +122,7 @@ function Demo({ lensID }: DemoProps) {
 
   const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target;
-    setSensitivity(input.value);
+    setDifficulty(input.value);
     // Update tooltip position based on slider's thumb
     const sliderWidth = input.offsetWidth;
     const thumbPosition = (+input.value - 0.5) * sliderWidth;
@@ -122,22 +144,47 @@ function Demo({ lensID }: DemoProps) {
   };
 
   const handlePrevious = () => {
-    //TODO
+    if (availableExercises && selectedExerciseIndex > 0) {
+      setSelectedExerciseIndex(selectedExerciseIndex - 1);
+      setSelectedExercise(availableExercises[selectedExerciseIndex - 1]);
+    }
   };
 
   const handleNext = () => {
-    //TODO
+    if (availableExercises && selectedExerciseIndex < availableExercises.length - 1) {
+      setSelectedExerciseIndex(selectedExerciseIndex + 1);
+      setSelectedExercise(availableExercises[selectedExerciseIndex + 1]);
+    }
   };
 
-  const handleExerciseTypeChange = (
+  const handleExerciseSelectionChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setExerciseType(event.target.value);
+    const selectedValue = event.target.value;
+    const newIndex = availableExercises?.findIndex(exercise => exercise === selectedValue) || 0;
+    setSelectedExerciseIndex(newIndex);
+    setSelectedExercise(event.target.value);
   };
+
+  const getCurrentExerciseName = () => {
+    if (selectedExercise) {
+      return selectedExercise;
+    }
+    return "Sample Exercise";
+  };
+
+  const shouldShowPreviousButton = () => {
+    return availableExercises && availableExercises.length > 1 && selectedExerciseIndex > 0;
+  };
+
+  const shouldShowNextButton = () => {
+    return availableExercises && availableExercises.length > 1 && selectedExerciseIndex < availableExercises.length - 1;
+  };
+
 
   const handleUpdate = () => {
     console.log("Settings updated:", {
-      sensitivity,
+      difficulty,
       exerciseType,
       exerciseDuration,
       reps,
@@ -245,9 +292,8 @@ function Demo({ lensID }: DemoProps) {
       });
 
       // Update state based on imported data
-      if (data["Difficulty Level"]) setSensitivity(data["Difficulty Level"]);
-      if (data["Exercise Duration (seconds)"])
-        setExerciseDuration(data["Exercise Duration (seconds)"]);
+      if (data["Difficulty Level"]) setDifficulty(data["Difficulty Level"]);
+      if (data["Exercise Duration (seconds)"]) setExerciseDuration(data["Exercise Duration (seconds)"]);
       if (data["Required Reps"]) setReps(data["Required Reps"]);
       if (data["Required Sets"]) setSets(data["Required Sets"]);
       if (data["Enabled Left Side"])
@@ -286,7 +332,7 @@ function Demo({ lensID }: DemoProps) {
     const exerciseValues = demoExercises.map((exercise) => [
       exercise.Name,
       exercise.ExerciseType,
-      sensitivity, // Difficulty level
+      difficulty, // Difficulty level
       exerciseType === "timer" ? exerciseDuration : "N/A", // Duration for timer type
       exerciseType === "repetitive" ? reps : "N/A", // Reps for repetitive type
       exerciseType === "repetitive" ? sets : "N/A", // Sets for repetitive type
@@ -351,23 +397,20 @@ function Demo({ lensID }: DemoProps) {
 
   return (
     <Container className="px-4">
-      <div className="top-right-text">
+      {/* <div className="top-right-text">
         {lensData?.completedReps ?? "Loading..."}
-      </div>
+      </div> */}
 
       {!isStarted ? (
         // Before clicking the start button, show the exercise description
         <Row>
           <Col md={3} className="exercise-panel">
             <h2 className="fs-3">
-              <b>Sample Exercise</b>
+              <b>{name}</b>
             </h2>
             <hr className="separator" />
             <p className="exercise-description">
-              In this exercise, you will have three sample facial exercises to
-              explore FaceAR features using your WebCam. After starting the
-              exercise, you can adjust your sensitivity level and switch to
-              unilateral mode in the setting panel.
+              {description}
             </p>
           </Col>
           <Col md={8} className="text-center">
@@ -407,12 +450,40 @@ function Demo({ lensID }: DemoProps) {
               <b>Settings</b>
             </h2>
             <p className="setting-description">
-              In this setting panel, you will be able to adjust the sensitivity
+              In this setting panel, you will be able to adjust the difficulty
               level through the slider below and toggle the bilateral setting
               buttons
             </p>
 
             <hr className="separator" />
+
+            {/* Exercise Selection Dropdown - Add this FIRST in the settings */}
+            {features.showExerciseSelection && 
+             availableExercises && 
+             availableExercises.length > 0 && (
+              <div>
+                <Form.Group controlId="exerciseSelection" className="mb-3">
+                  <Form.Label>
+                    <b>Select {features.exerciseTypes.includes("game") ? "Game" : "Exercise"}</b>
+                  </Form.Label>
+                  <Form.Select
+                    value={selectedExercise}
+                    onChange={handleExerciseSelectionChange}
+                  >
+                    {availableExercises.map((exercise, index) => (
+                      <option key={exercise} value={exercise}>
+                        {index + 1}. {exercise}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <Form.Text className="text-muted">
+                    Choose the specific {features.exerciseTypes.includes("game") ? "game" : "exercise"} you want to perform
+                  </Form.Text>
+                </Form.Group>
+                <hr className="separator" />
+              </div>
+            )}
+
             <OverlayTrigger
               placement="top"
               overlay={
@@ -427,68 +498,56 @@ function Demo({ lensID }: DemoProps) {
                       borderRadius: "5px",
                     }}
                   >
-                    {sensitivity}
+                    {difficulty}
                   </div>
                 </Tooltip>
               }
             >
               <Form.Range
-                id="mySensitivity"
-                min={0}
+                id="myDifficulty"
+                min={minDifficulty}
                 max={1}
                 step={0.1}
-                value={sensitivity}
+                value={difficulty}
                 onChange={handleSliderChange}
               />
             </OverlayTrigger>
-            <Form.Label className="sensitivity-label">
-              Sensitivity
+            <Form.Label className="difficulty-label">
+              Difficulty
               <OverlayTrigger
                 placement="top"
                 overlay={
                   <Tooltip id="tooltip-top">
-                    Adjusts the sensitivity of the AR lens detection.
+                    Adjusts the difficulty value of the AR lens detection.
                   </Tooltip>
                 }
               >
-                <span className="sensitivity-infoIcon">
+                <span className="difficulty-infoIcon">
                   &#9432; {/* Unicode for a small 'info' symbol */}
                 </span>
               </OverlayTrigger>
             </Form.Label>
 
             <hr className="separator" />
-            {/* Dropdown to select exercise type */}
-            <Form.Group controlId="exerciseTypeSelect" className="mb-3">
-              <Form.Label>
-                <b>Select Exercise Type</b>
-              </Form.Label>
-              <Form.Select
-                value={exerciseType}
-                onChange={handleExerciseTypeChange}
-              >
-                <option value="timer">Timer Type</option>
-                <option value="repetitive">Repetitive Exercise Type</option>
-              </Form.Select>
-            </Form.Group>
-
-            {/* Conditional rendering based on exercise type */}
-            {exerciseType === "timer" && (
-              <Form.Group controlId="exerciseDuration" className="mb-3">
-                <Form.Label>
-                  <b>Exercise Duration (seconds)</b>
-                </Form.Label>
-                <Form.Control
-                  type="number"
-                  min={10}
-                  value={exerciseDuration}
-                  onChange={(e) => setExerciseDuration(e.target.value)}
-                />
-                <Form.Text>{exerciseDuration} seconds</Form.Text>
-              </Form.Group>
+            {features.exerciseTypes.includes("timer") && features.showDuration && (
+              <div>
+                <Form.Group controlId="exerciseDuration" className="mb-3">
+                  <Form.Label>
+                    <b>Exercise Duration (seconds)</b>
+                  </Form.Label>
+                  <Form.Control
+                    type="number"
+                    min={10}
+                    value={exerciseDuration}
+                    onChange={(e) => setExerciseDuration(e.target.value)}
+                  />
+                  <Form.Text>{exerciseDuration} seconds</Form.Text>
+                </Form.Group>
+                <hr className="separator" />
+              </div>
             )}
 
-            {exerciseType === "repetitive" && (
+            {features.exerciseTypes.includes("repetitive") && features.showRepsAndSets && (
               <div>
                 <Form.Group controlId="exerciseReps" className="mb-3">
                   <Form.Label>
@@ -515,48 +574,104 @@ function Demo({ lensID }: DemoProps) {
                     onChange={(e) => setSets(e.target.value)}
                   />
                 </Form.Group>
+                <hr className="separator" />
               </div>
             )}
 
-            <hr className="separator" />
-            <Row className="mb-3">
-              <Col xs={6}>
-                <Form.Check
-                  type="switch"
-                  id="leftSwitch"
-                  checked={isLeftOn}
-                  onChange={() => handleToggleSide("left")}
-                  className="custom-switch mt-3"
-                />
-                <div className="switch-label">Left</div>
-              </Col>
-
-              <Col xs={6}>
-                <Form.Check
-                  type="switch"
-                  id="rightSwitch"
-                  checked={isRightOn}
-                  onChange={() => handleToggleSide("right")}
-                  className="custom-switch mt-3"
-                />
-                <div className="switch-label">
-                  Right
+            {/* Speed Slider - only show for jump game */}
+            {features.showSpeedSlider && (
+              <div>
+                <Form.Label className="speed-label">
+                  Game Speed
                   <OverlayTrigger
                     placement="top"
                     overlay={
-                      <Tooltip id="tooltip-top">
-                        Adjusts the bilateral setting of the lens
+                      <Tooltip id="speed-tooltip">
+                        Adjusts the speed of the jump game (0.1 = slow, 1.0 = fast)
                       </Tooltip>
                     }
                   >
-                    <span className="switch-infoIcon">
-                      &#9432; {/* Unicode for a small 'info' symbol */}
-                    </span>
+                    <span className="speed-infoIcon">&#9432;</span>
                   </OverlayTrigger>
+                </Form.Label>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id="speed-tooltip-top">
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "-30px",
+                          left: speedtipPosition.left,
+                          color: "#000",
+                          padding: "5px",
+                          borderRadius: "5px",
+                        }}
+                      >
+                        {gameSpeed}
+                      </div>
+                    </Tooltip>
+                  }
+                >
+                  <Form.Range
+                    id="myGameSpeed"
+                    min={0.1}
+                    max={1.0}
+                    step={0.1}
+                    value={gameSpeed}
+                    onChange={(e) => {
+                      setGameSpeed(e.target.value);
+                    }}
+                  />
+                </OverlayTrigger>
+                <div className="d-flex justify-content-between">
+                  <small className="text-muted">Slow</small>
+                  <small className="text-muted">Fast</small>
                 </div>
-              </Col>
-            </Row>
-            <hr className="separator" />
+                <hr className="separator" />
+              </div>
+            )}
+
+            {features.showBilateralToggles && (
+              <div>
+                <Row className="mb-3">
+                  <Col xs={6}>
+                    <Form.Check
+                      type="switch"
+                      id="leftSwitch"
+                      checked={isLeftOn}
+                      onChange={() => handleToggleSide("left")}
+                      className="custom-switch mt-3"
+                    />
+                    <div className="switch-label">Left</div>
+                  </Col>
+
+                  <Col xs={6}>
+                    <Form.Check
+                      type="switch"
+                      id="rightSwitch"
+                      checked={isRightOn}
+                      onChange={() => handleToggleSide("right")}
+                      className="custom-switch mt-3"
+                    />
+                    <div className="switch-label">
+                      Right
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={
+                          <Tooltip id="tooltip-top">
+                            Adjusts the bilateral setting of the lens
+                          </Tooltip>
+                        }
+                      >
+                        <span className="switch-infoIcon">&#9432;</span>
+                      </OverlayTrigger>
+                    </div>
+                  </Col>
+                </Row>
+                <hr className="separator" />
+              </div>
+            )}
           </Col>
 
           <Col md={8} className="text-center">
@@ -590,33 +705,41 @@ function Demo({ lensID }: DemoProps) {
                 className="d-flex justify-content-center align-items-center mt-3"
                 style={{ gap: "20px" }}
               >
-                <Button
-                  id="prevButton"
-                  variant="secondary"
-                  onClick={handlePrevious}
-                  style={{
-                    backgroundColor: "#ffffffff",
-                    borderColor: "#ffffffff",
-                    color: "black",
-                  }}
-                >
-                  Previous
-                </Button>
+                {shouldShowPreviousButton() ? (
+                  <Button
+                    id="prevButton"
+                    variant="secondary"
+                    onClick={handlePrevious}
+                    style={{
+                      backgroundColor: "#0284c7",
+                      borderColor: "#2563eb",
+                      color: "white",
+                    }}
+                  >
+                    Previous
+                  </Button>
+                ) : (
+                  <div id="prevButton" style={{ width: "80px" }}></div> // Placeholder to maintain spacing
+                )}
                 <span className="exercise-name fs-3">
-                  <b>Sample Exercise</b>
+                  <b>{getCurrentExerciseName()}</b>
                 </span>
-                <Button
-                  id="nextButton"
-                  variant="secondary"
-                  onClick={handleNext}
-                  style={{
-                    backgroundColor: "#ffffffff",
-                    borderColor: "#ffffffff",
-                    color: "black",
-                  }}
-                >
-                  Next
-                </Button>
+                {shouldShowNextButton() ? (
+                  <Button
+                    id="nextButton"
+                    variant="secondary"
+                    onClick={handleNext}
+                    style={{
+                      backgroundColor: "#0284c7",
+                      borderColor: "#2563eb",
+                      color: "white",
+                    }}
+                  >
+                    Next
+                  </Button>
+                ) : (
+                  <div id="nextButton" style={{ width: "80px" }}></div> // Placeholder to maintain spacing
+                )}
               </div>
 
               {/* Recording and CSV buttons */}

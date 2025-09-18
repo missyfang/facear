@@ -6,11 +6,14 @@ import Home from './Home';
 import Development from './Demo';
 import Footer from './Footer';
 import About from './About';
+import { LensConfig, lensConfigs } from './constant/lensConfig';
 
 const lensIDs = {
   basic: "2317d687-d5ce-4ccf-95ce-06ab74358a93",
-  jumpGame: "40476bf8-01c0-45d9-b082-74392206e5e2",
-  timer: "623ea02f-ff58-48ce-a42d-badce1fecdb6"
+  jumpGame: "0b504864-00df-4321-8fdf-0c86bd5bcfaa",
+  timer: "623ea02f-ff58-48ce-a42d-badce1fecdb6",
+  lip: "00120037-aec6-4798-8212-ffe013f704e8",
+  eyeAndBrow: "54c0c4ce-d0d0-4cb7-9845-e0a322dc8249"
 };
 
 const App: React.FC = () => {
@@ -22,9 +25,11 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/demo/basic" element={<Development lensID={lensIDs.basic}/>} />
-          <Route path="/demo/jump-game" element={<Development lensID={lensIDs.jumpGame}/>} />
-          <Route path="/demo/timer" element={<Development lensID={lensIDs.timer}/>} />
+          <Route path="/demo/basic" element={<Development key="basic" config={lensConfigs.basic}/>} />
+          <Route path="/demo/jump-game" element={<Development key="jump-game" config={lensConfigs.jumpGame}/>} />
+          <Route path="/demo/timer" element={<Development key="timer" config={lensConfigs.timer}/>} />
+          <Route path="/demo/lip" element={<Development key="lip" config={lensConfigs.lip}/>} />
+          <Route path="/demo/eye-and-brow" element={<Development key="eye-and-brow" config={lensConfigs.eyeAndBrow}/>} />
         </Routes>
         <div className='p-4 mb-4'></div>
         <Footer />
