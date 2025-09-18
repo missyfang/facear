@@ -42,6 +42,7 @@ function Demo({ config }: DemoProps) {
   const [selectedExercise, setSelectedExercise] = useState(
     availableExercises?.[0] || ""
   );
+  const [selectedExerciseIndex, setSelectedExerciseIndex] = useState(0);
   const [recordingTime, setRecordingTime] = useState(0);
   const [showRedCircle, setShowRedCircle] = useState(false);
   const [gameSpeed, setGameSpeed] = useState("0.5");
@@ -143,16 +144,25 @@ function Demo({ config }: DemoProps) {
   };
 
   const handlePrevious = () => {
-    //TODO
+    if (availableExercises && selectedExerciseIndex > 0) {
+      setSelectedExerciseIndex(selectedExerciseIndex - 1);
+      setSelectedExercise(availableExercises[selectedExerciseIndex - 1]);
+    }
   };
 
   const handleNext = () => {
-    //TODO
+    if (availableExercises && selectedExerciseIndex < availableExercises.length - 1) {
+      setSelectedExerciseIndex(selectedExerciseIndex + 1);
+      setSelectedExercise(availableExercises[selectedExerciseIndex + 1]);
+    }
   };
 
   const handleExerciseSelectionChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    const selectedValue = event.target.value;
+    const newIndex = availableExercises?.findIndex(exercise => exercise === selectedValue) || 0;
+    setSelectedExerciseIndex(newIndex);
     setSelectedExercise(event.target.value);
   };
 
@@ -161,6 +171,14 @@ function Demo({ config }: DemoProps) {
       return selectedExercise;
     }
     return "Sample Exercise";
+  };
+
+  const shouldShowPreviousButton = () => {
+    return availableExercises && availableExercises.length > 1 && selectedExerciseIndex > 0;
+  };
+
+  const shouldShowNextButton = () => {
+    return availableExercises && availableExercises.length > 1 && selectedExerciseIndex < availableExercises.length - 1;
   };
 
 
@@ -452,9 +470,9 @@ function Demo({ config }: DemoProps) {
                     value={selectedExercise}
                     onChange={handleExerciseSelectionChange}
                   >
-                    {availableExercises.map(exercise => (
+                    {availableExercises.map((exercise, index) => (
                       <option key={exercise} value={exercise}>
-                        {exercise}
+                        {index + 1}. {exercise}
                       </option>
                     ))}
                   </Form.Select>
@@ -687,33 +705,41 @@ function Demo({ config }: DemoProps) {
                 className="d-flex justify-content-center align-items-center mt-3"
                 style={{ gap: "20px" }}
               >
-                <Button
-                  id="prevButton"
-                  variant="secondary"
-                  onClick={handlePrevious}
-                  style={{
-                    backgroundColor: "#ffffffff",
-                    borderColor: "#ffffffff",
-                    color: "black",
-                  }}
-                >
-                  Previous
-                </Button>
+                {shouldShowPreviousButton() ? (
+                  <Button
+                    id="prevButton"
+                    variant="secondary"
+                    onClick={handlePrevious}
+                    style={{
+                      backgroundColor: "#0284c7",
+                      borderColor: "#2563eb",
+                      color: "white",
+                    }}
+                  >
+                    Previous
+                  </Button>
+                ) : (
+                  <div id="prevButton" style={{ width: "80px" }}></div> // Placeholder to maintain spacing
+                )}
                 <span className="exercise-name fs-3">
                   <b>{getCurrentExerciseName()}</b>
                 </span>
-                <Button
-                  id="nextButton"
-                  variant="secondary"
-                  onClick={handleNext}
-                  style={{
-                    backgroundColor: "#ffffffff",
-                    borderColor: "#ffffffff",
-                    color: "black",
-                  }}
-                >
-                  Next
-                </Button>
+                {shouldShowNextButton() ? (
+                  <Button
+                    id="nextButton"
+                    variant="secondary"
+                    onClick={handleNext}
+                    style={{
+                      backgroundColor: "#0284c7",
+                      borderColor: "#2563eb",
+                      color: "white",
+                    }}
+                  >
+                    Next
+                  </Button>
+                ) : (
+                  <div id="nextButton" style={{ width: "80px" }}></div> // Placeholder to maintain spacing
+                )}
               </div>
 
               {/* Recording and CSV buttons */}

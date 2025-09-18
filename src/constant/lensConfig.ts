@@ -49,8 +49,8 @@ export const lensConfigs: Record<string, LensConfig> = {
     },
     availableExercises: [
       "Open Mouth",
-      "Exercise 2",
-      "Exercise 3"
+      "Blink",
+      "Smile"
     ]
   },
   timer: {
